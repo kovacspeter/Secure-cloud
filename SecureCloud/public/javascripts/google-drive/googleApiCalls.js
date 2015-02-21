@@ -146,44 +146,45 @@ function updateFileResumable(metadata, fileData, callback) {
 }
 
 /**
-* Download a file's content.
-*
-* @param {File} file Drive File instance.
-* @param {Function} callback Function to call when the request is complete.
-*/
+ * Download a file's content.
+ *
+ * @param {File} file Drive File instance.
+ * @param {Function} callback Function to call when the request is complete.
+ */
 function downloadFileFromDrive(file, callback) {
     if (file.downloadUrl) {
         var accessToken = gapi.auth.getToken().access_token;
         var xhr = new XMLHttpRequest();
         xhr.open('GET', file.downloadUrl);
         xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-        xhr.onload = function() {
-            if(file.title.indexOf('.sc') > -1) {
+        //ITS ENCRYPTED FILE
+        if(file.title.indexOf('.sc') > -1) {
+            xhr.onload = function() {
                 var key = prompt("Please enter key for file decryption","password");
                 var base64decrypt = sjcl.decrypt(key, xhr.response, {'raw': 1});
-                var byteNumbers = sjcl.codec.bytes.fromBits(base64decrypt);
-                var byteArray = new Uint8Array(byteNumbers);
+                var byteArray = new Uint8Array(sjcl.codec.bytes.fromBits(base64decrypt));
                 var title = '';
                 var titleArray = file.title.split('.');
                 for(i=0; i<titleArray.length - 1; i++){
                     title = title + "." + titleArray[i];
                 }
+                log(byteArray);
                 callback({
                     'title': title,
                     'data': byteArray
                 });
-            } else {
-                alert("only .sc file supported for now");
-                //var byteNumbers = _fromBitArrayCodec(xhr.response);
-                //var byteArray = new Uint8Array(byteNumbers);
-                //console.log(byteNumbers);
-                //console.log(byteArray);
-                //callback({
-                //    'title': file.title,
-                //    'data': xhr.responseText
-                //});
-            }
-        };
+            };
+        //ITS NOT ENCRYPTED FILE!!
+        }else {
+            xhr.responseType = 'arraybuffer';
+            xhr.onload = function() {
+                var byteArray = new Uint8Array(xhr.response);
+                callback({
+                    'title': file.title,
+                    'data': byteArray
+                });
+            };
+        }
         xhr.onerror = function() {
             log("ERROR! Daco si pokazil :D");
             callback(null);
