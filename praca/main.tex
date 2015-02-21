@@ -1,0 +1,268 @@
+\documentclass[12pt, oneside]{book}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[slovak]{babel}
+\usepackage{mathtools}
+\usepackage{url}            % lepsie zobrazovanie URL
+\usepackage{bibentry}       % zobrazovanie celych odkazov v texte
+\nobibliography*            % odkazy sa maju dat aj do zoznamu literatury
+\linespread{1.2}
+
+% -------------------
+% --- Definicia zakladnych pommov
+% -------------------
+\def\*{{\bf FIXME: }}
+\def\serviceName{SecureCloud}
+\def\mfyear{2015}
+\def\mftitle{Webovské rozhranie pre bezpečné zdieľanie dokumentov v cloude}
+\def\mfthesistype{bakalárska práca}
+\def\mfauthor{Peter Kovács}
+\def\mfadvisor{RNDr. Michal Rjaško, PhD. }
+\def\mfplacedate{Bratislava, \mfyear}
+\def\odbor{2508 Informatka} %aj cislo odboru je povinne a je to podla katedry/odboru, na ktorom je autor
+\def\program{ Informatika }
+\def\stredisko{ Katedra Informatiky }
+
+\begin{document}     
+
+% -------------------
+% --- Obalka ------
+% -------------------
+\thispagestyle{empty}
+\noindent
+
+\begin{minipage}{0.95\textwidth}
+\begin{center}
+\sc  
+\large
+\vspace*{0.3cm} Univerzita Komenského v Bratislave\\
+\vspace*{0.3cm} Fakulta matematiky, fyziky a informatiky\\
+\end{center}
+\end{minipage}
+
+\vfill
+
+\begin{minipage}{1.1\textwidth}
+\begin{flushright}
+\bigskip\bigskip
+\center{\sc\LARGE\mftitle}
+\centerline{\sc\mfthesistype}
+
+\bigskip\bigskip\bigskip\bigskip
+\end{flushright}
+\end{minipage}
+\vfill
+
+\noindent \mfyear\\
+\indent\mfauthor
+
+\eject % EOP i
+% --- koniec obalky ----
+% -------------------
+% --- Titulný list
+% -------------------
+
+\thispagestyle{empty}
+\noindent
+
+\begin{minipage}{0.95\textwidth}
+\begin{center}
+\sc  
+\large
+\vspace*{0.3cm} Univerzita Komenského v Bratislave\\
+\vspace*{0.3cm} Fakulta matematiky, fyziky a informatiky\\
+\end{center}
+\end{minipage}
+
+\vfill
+
+\begin{minipage}{1.1\textwidth}
+\begin{flushright}
+\bigskip\bigskip
+\center{\sc\LARGE\mftitle}
+\centerline{\sc\mfthesistype}
+\end{flushright}
+
+\bigskip
+\vspace{3cm}
+\bigskip
+\begin{tabular}{ll}
+Študijný program: & \program \\
+Študijný odbor: & \odbor \\
+Školiace pracovisko: & \stredisko \\
+Školiteľ: & \mfadvisor \\
+\end{tabular}
+
+\end{minipage}
+\vfill
+
+\noindent \mfplacedate\\
+\indent\mfauthor
+
+\eject % EOP i
+
+
+% --- Koniec titulnej strany
+
+
+% -------------------
+% --- Naskenovane Zadanie
+% -------------------
+% v tlačenej verzii s podpismi zainteresovaných osôb.
+% v elektronickej verzii sa zverejňuje zadanie bez podpisov zainteresovaných osôb.
+
+\newpage 
+\thispagestyle{empty}
+\hspace{-1cm}\includegraphics[width=1.2\textwidth]{images/bcpeto}
+
+% --- Koniec zadania
+
+\frontmatter
+
+% -------------------
+%   Poďakovanie - nepovinné
+% -------------------
+\newpage 
+\thispagestyle{empty}
+
+\vfill
+{\bf Poďakovanie:}
+
+% --- Koniec poďakovania
+
+% -------------------
+%   Abstrankt - Slovensky
+% -------------------
+\newpage 
+\thispagestyle{empty}
+
+\huge{Abstrakt}
+\normalsize
+\newline
+Slovenský abstrakt 100-500 slov
+
+{\bf Kľúčové slová:} jedno, druhé, tretie (prípadne štvrté, piate)
+% --- Koniec Abstrakt - Slovensky
+
+
+% -------------------
+% --- Abstrakt - Anglicky 
+% -------------------
+\newpage 
+\thispagestyle{empty}
+
+\huge{Abstract}
+\normalsize
+\newline
+English abstract
+
+{\bf Keywords:} 
+
+% --- Koniec Abstrakt - Anglicky
+
+% -------------------
+% --- Predhovor ?????
+% -------------------
+%\newpage 
+%\thispagestyle{empty}
+%
+%\huge{Predhovor}
+%\normalsize
+%\newline
+%Predhovor je všeobecná informácia o práci, obsahuje hlavnú charakteristiku práce 
+%a okolnosti jej vzniku. Autor zdôvodní výber témy, stručne informuje o cieľoch 
+%a význame práce, spomenie domáci a zahraničný kontext, komu je práca určená, 
+%použité metódy, stav poznania; autor stručne charakterizuje svoj prístup a svoje 
+%hľadisko. 
+%
+% --- Koniec Predhovor
+
+
+% -------------------
+% --- Obsah
+% -------------------
+
+\newpage 
+
+\tableofcontents
+
+% ---  Koniec Obsahu
+
+% -------------------
+% --- Zoznamy tabuliek, obrázkov
+% -------------------
+
+\newpage 
+
+\listoffigures
+
+% ---  Koniec Zoznamov
+
+\mainmatter
+
+
+\input uvod.tex 
+
+\input problem.tex
+
+\input kryptografia.tex
+
+\input Implementacia.tex
+
+\input zaver.tex
+
+% -------------------
+% --- Bibliografia
+% -------------------
+
+
+\newpage	
+
+\backmatter
+
+\thispagestyle{empty}
+\nocite{*}
+\clearpage
+
+\bibliographystyle{plain}
+\bibliography{literatura} 
+
+%Prípadne môžete napísať literatúru priamo tu
+\begin{thebibliography}{1}
+
+\bibitem{HOAC} Alfred J. Menezes - Paul C. van Oorschot - Scott A. Vanstone, 1996, Handbook of Applied Cryptography, CRC Press
+ 
+%\bibitem{br1} MOLINA H. G. - ULLMAN J. D. - WIDOM J., 2002, Database Systems, Upper Saddle River : Prentice-Hall, 2002, 1119 s., Pearson International edition, 0-13-098043-9
+
+%\bibitem{br2} MOLINA H. G. - ULLMAN J. D. - WIDOM J., 2000 , Databasse System implementation, New Jersey : Prentice-Hall, 2000, 653s., ???
+
+%\bibitem{br3} ULLMAN J. D. - WIDOM J., 1997, A First Course in Database Systems, New Jersey : Prentice-Hall, 1997, 470s., 
+
+%\bibitem{br4} PREFUSE, 2007, The Prefuse visualization toolkit,  [online] Dostupné na internete: <http://prefuse.org/>
+
+%\bibitem{br5} PREFUSE Forum, Sourceforge - Prefuse Forum,  [online] Dostupné na internete: <http://sourceforge.net/projects/prefuse/>
+
+\end{thebibliography}
+
+%---koniec Referencii
+
+% -------------------
+%--- Prilohy---
+% -------------------
+
+%Nepovinná časť prílohy obsahuje materiály, ktoré neboli zaradené priamo  do textu. Každá príloha sa začína na novej strane.
+%Zoznam príloh je súčasťou obsahu.
+%
+%\addcontentsline{toc}{chapter}{Appendix A}
+%\input AppendixA.tex
+%
+%\addcontentsline{toc}{chapter}{Appendix B}
+%\input AppendixB.tex
+
+\end{document}
+
+
+
+
+
+

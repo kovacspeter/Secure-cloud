@@ -1,0 +1,24 @@
+\chapter{Súčasné riešenia}
+
+V prvej kapitole popíšeme čo sú vlastne cloudové úložiská, poskytneme prehľad existujúcich riešení šifrovaných úložísk. Uvedieme ich poskytovné služby a spôsob, akým fungujú. V závere kapitoly ich porovnáme s naším riešením.
+
+\section{Cloudové úložiská}
+	Cloudové úložisko je služba ktorá nám umožnuje manipulovať s priestorom ktorý sme si prenajali od poskytovateľa služby. Táto služba by sa mala byť škálovateľná, vieme jednoducho zvačšiť priestor za ktorý platíme, starať o to aby naše dáta boli stále prístupné čo zahŕňa ochranu voči strate a poškodeniu dát poprípade výpadkom siete. 
+	
+\section{Existujúce riešenia na šifrované ukladanie dát}
+	Súčasné služby môžeme rozdeliť do dvoch kategórií. Väčšina z nich poskytuje natívnu aplikáciu do počítača alebo mobilného zariadenia, tá menšia skupina sa zamerala na tvorbu webovej aplikácie prostredníctvom, ktorej užívateľ spravuje svoje dáta. Väčšina služieb sa snaží dodržiavať zásadu "zero-knowledge", ktorá zaručuje užívateľovi, že poskytovateľ cloudového úložiska nebude mať o jeho dátach nijaké informácie. 
+	\subsubsection{Vlastné cloudové riešenie}
+		Jeden z najznámejších poskytovateľov šifrovaného cloudového úložiska je Mega. Okrem webovskej aplikácie Mega ponúka mobilné aj desktopové aplikácie, ktoré môžu niektorí užívatelia preferovať pred webovým rozhraním. Pri registrácii si zvolíme heslo, ktoré bude použité ako kľúč pri symetrickom šifrovaní našich súborov. Celé šifrovanie prebieha na počítači klienta, takže Mega nemá žiadne informácie o obsahu uloženom v cloude a tiež nepozná naše heslo. Ďalej sú tu služby ako SpiderOak a Wuala, ktoré neposkytujú webové rozhranie a všetky operácie musíme robiť pomocou aplikácie na našom počítači.
+	\subsubsection{Využívanie dostupných cloudových riešení}
+		Viivo na rozdiel od Megy využíva už existujúce cloudové riešenia, ktoré poskytujú API na prácu so súbormi a vybudoval tak vrstvu medzi klientom a jeho obľúbeným cloudovým úložiskom ako napríklad Dropbox, Box alebo SkyDrive. Boxcryptor je ďalšia služba veľmi podobná Viivu, ktorá tiež vytvorila vrstvu medzi cloudom a požívateľom. Viivo ani Boxcryptor neposkytujú webové rozhranie, takže používatel je nútený inštalovať dodatočný software. 
+
+\section{Cieľ práce}
+	Pre naše riešenie sme sa rozhodli skombinovať dva prístupy. Rozhodli sme sa používať už existujúce cloudové úložiská ku ktorým vytvoríme webovské rozhranie. Netreba ho inštalovať, čo zvyšuje pouziteľnosť a podporuje okrem počítačov aj mobilné zariadenia. Keby sme sa rozhodli pre natívnu aplikáciu, nielen že by sme potrebovali naprogramovať aj mobilný variant, ale aj by sme zaťažovali cieľového užívateľa sťahovaním a inštalovaním. Preto sme vytvorili jednoduché a prehľadné prostredie, z ktorého bude možné využívať viacero úložísk. Pre testovanie a koncept návrhu budeme využívať cloudové úložisko firmy Google, Drive. Našu službu sme sa rozhodli nazvať \serviceName.
+
+\section{Porovnanie}
+	V tejto časti vysvetlíme, v čom sa bude \serviceName líšiť od ostatných služieb a aká je naša motivácia vytvoriť vlastné riešenie.
+	\subsubsection{Mega vs \serviceName}
+	Mega patrí medzi najlepších poskytovateľov šifrovaných cloudových riešení na trhu. Bohužial veľa ľudí nechce začať využívať iné riešenie ako to, na aké boli doteraz zvyknutí. Medzi najpoužívanejšie a najznámejšie rozhodne patrí Google-Drive a Dropbox, ale ani jedno neponúka šifrovanie dát. Výhoda \serviceName oproti Mega spočíva v možnosti pokračovať vo využívaní služieb Googlu alebo Dropboxu a zároveň v zabezpečení šifrovania dát. Modelový užívateľ, ktorý uprednostní naše riešenie oproti riešeniu Megy, je taký, ktorý má napríklad zaplatený poplatok za priestor u jedného zo spomenutých prevádzkovateľov.
+	
+	\subsubsection{Viivo a Boxcryptor vs \serviceName}
+	Napriek tomu, že Viivo aj Boxcryptor ponúkajú využívanie vrstvy medzi obľúbenými poskytovateľmi úložísk a používateľom, nemajú nijaké webové rozhranie, čo zaťažuje používateľa okrem registrácie aj inštaláciami mobilných a desktopových aplikácií na všetkých zariadeniach, na ktorých budú službu využívať. Naopak naše riešenie vyžaduje iba prihlásenie pomocou už existujúceho Dropbox alebo Google konta.

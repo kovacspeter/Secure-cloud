@@ -1,0 +1,36 @@
+extends layout
+
+block content
+  .container
+    .row.row-offcanvas
+      .col-xs-12
+        #myGoogleDrive
+          form(method='post', enctype='multipart/form-data')
+            #drop
+              input#uplFile(type='file', name='upl')
+          #files
+          #driveButtons
+            a#showMyDrive.btn.btn-md.btn-primary(role='button')
+              span.glyphicon.glyphicon-cloud
+              |  Show
+            a#uploadFile.btn.btn-md.btn-primary(role='button')
+              span.glyphicon.glyphicon-cloud-upload
+              |  Upload
+            a#downloadFile.btn.btn-md.btn-primary(role='button')
+              span.glyphicon.glyphicon-cloud-download
+              |  Download
+    script(type='text/javascript').
+      log("ecc working?");
+      log(sjcl.ecc);
+      var file;
+      $('#downloadFile').attr('disabled', true);
+      $('#showMyDrive').click(function() {
+        showMyDrive('files', 'root');
+      });
+      $('#downloadFile').click(function() {
+        downloadFile()
+      });
+      $('#uploadFile').click(function() {
+        uploadFile()
+      });
+       //TODO upload file disabled until form filled

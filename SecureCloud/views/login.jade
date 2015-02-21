@@ -1,0 +1,17 @@
+extends layout
+
+block content
+   .container
+      .row
+         .col-sm-6.col-sm-offset-3
+            h1 Login
+            if message.length > 0
+                  .alert.alert-danger #{message}
+            p Login or Register with &nbsp;
+               a.btn.btn-danger(href='/auth/google')
+                  span.fa.fa-google-plus
+                  | Google
+            p
+               | Or go&nbsp;
+               a(href='/') home
+               | .

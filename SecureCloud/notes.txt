@@ -1,0 +1,55 @@
+Tutorials:
+
+GOOGLE -
+http://campus.codeschool.com/courses/discover-drive/level/1/video/1
+https://developers.google.com/drive/web/auth/web-client
+
+google file metadata looks like this:
+Object {
+    kind: "drive#file",
+    id: "0AnvSr61wnd8hdDNfYzBheE5Xc2tldzBCakdOaFdxNFE",
+    etag: ""lHp9sVndhdVrqRbdRzOZyxWEg4U/MTM3NTEzMzU0MjU2MQ"",
+    selfLink: "https://www.googleapis.com/drive/v2/files/0AnvSr61wnd8hdDNfYzBheE5Xc2tldzBCakdOaFdxNFE",
+    alternateLink: "https://docs.google.com/spreadsheet/ccc?key=0AnvSr…wnd8hdDNfYzBheE5Xc2tldzBCakdOaFdxNFE&usp=drivesdk"…}
+    alternateLink: "https://docs.google.com/spreadsheet/ccc?key=0AnvSr61wnd8hdDNfYzBheE5Xc2tldzBCakdOaFdxNFE&usp=drivesdk"
+    appDataContents: false
+    copyable: true
+    createdDate: "2013-07-29T17:01:39.752Z"
+    editable: true
+    embedLink: "https://docs.google.com/spreadsheet/ccc?key=0AnvSr61wnd8hdDNfYzBheE5Xc2tldzBCakdOaFdxNFE&output=html&chrome=false&widget=true"
+    etag: ""lHp9sVndhdVrqRbdRzOZyxWEg4U/MTM3NTEzMzU0MjU2MQ""
+    exportLinks: Object
+    iconLink: "https://ssl.gstatic.com/docs/doclist/images/icon_11_spreadsheet_list.png"
+    id: "0AnvSr61wnd8hdDNfYzBheE5Xc2tldzBCakdOaFdxNFE"
+    kind: "drive#file"labels: ObjectlastModifyingUser: Object
+    lastModifyingUserName: "Marja Holecyova"
+    lastViewedByMeDate: "2013-07-30T18:10:46.655Z"
+    markedViewedByMeDate: "2013-07-30T18:10:45.261Z"
+    mimeType: "application/vnd.google-apps.spreadsheet"
+    modifiedByMeDate: "2013-07-29T17:17:57.348Z"
+    modifiedDate: "2013-07-29T21:32:22.561Z"
+    ownerNames: Array[1]
+    owners: Array[1]
+    parents: Array[1]
+    quotaBytesUsed: "0"
+    result: Object
+    selfLink: "https://www.googleapis.com/drive/v2/files/0AnvSr61wnd8hdDNfYzBheE5Xc2tldzBCakdOaFdxNFE"
+    shared: true
+    sharedWithMeDate: "2013-07-29T17:03:34.417Z"
+    sharingUser: Object
+    thumbnailLink: "https://docs.google.com/feeds/vt?gd=true&id=0AnvSr61wnd8hdDNfYzBheE5Xc2tldzBCakdOaFdxNFE&v=0&s=AMedNnoAAAAAVEkQ09ATOnMvcOTLCevyAQGNvqkWMl4X&sz=s220"
+    title: "Plán likvidity"
+    userPermission: Object
+    etag: ""lHp9sVndhdVrqRbdRzOZyxWEg4U/B4NTqAuRx1ZZRrGHUy4rLYP91wM""
+    id: "me"
+    kind: "drive#permission"
+    role: "writer"
+    selfLink: "https://www.googleapis.com/drive/v2/files/0AnvSr61wnd8hdDNfYzBheE5Xc2tldzBCakdOaFdxNFE/permissions/me"t
+    ype: "user"
+    __proto__: Object
+    version: "179563"
+    writersCanShare: true
+    __proto__: Object
+
+DROPBOX -
+https://www.dropbox.com/developers/datastore/tutorial/js

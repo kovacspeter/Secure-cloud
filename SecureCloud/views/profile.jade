@@ -1,0 +1,32 @@
+extends layout
+
+block content
+   .container
+      .page-header.text-center
+         h1
+            span.fa.fa-anchor
+            | Profile Page
+      .row
+         .col-sm-6.col-sm-offset-3
+            .well
+               h3.text-danger
+                  span.fa.fa-google-plus
+                  | Google
+               if user.google.token
+                  p
+                     strong id
+                     | : #{user.google.id}
+                     br
+                     strong token
+                     | : #{user.google.token}
+                     br
+                     strong email
+                     | : #{user.google.email}
+                     br
+                     strong name
+                     | : #{user.google.name}
+               else
+                  a.btn.btn-danger(href='/connect/google') Connect Google
+
+         .col-sm-6.col-sm-offset-3
+            a.btn.btn-default.btn-sm(href='/logout') Logout

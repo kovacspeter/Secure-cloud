@@ -1,0 +1,37 @@
+extends layout
+
+block content
+  .container
+    .row.row-offcanvas
+      .col-xs-12
+        .jumbotron
+          h1 Welcome to SecureCloud!
+          p Store your files on Google Drive, Dropbox and others. Be cool, be secure!
+        // CAROUSEL
+        #myCarousel.carousel.slide(data-ride='carousel')
+          // Indicators
+          ol.carousel-indicators
+            li(data-target='#myCarousel', data-slide-to='0')
+            li.active(data-target='#myCarousel', data-slide-to='1')
+          .carousel-inner
+            .item
+              // <img src="../images/blackbg.jpeg" alt="First slide">
+              .container
+                .carousel-caption
+                  h1 Google Drive
+                  p We already support Google Drive, Try it today!
+                  p
+                    a.btn.btn-lg.btn-primary(href='drive#', role='button') Start using today!
+            .item.active
+              // <img src="../images/blackbg.jpeg" alt="Second slide">
+              .container
+                .carousel-caption
+                  h1 DropBox
+                  p Not using Google? Be safe with DropBox and SecureCloud
+                  p
+                    a.btn.btn-lg.btn-primary(href='drive#', role='button') Start using today!
+          a.left.carousel-control(href='#myCarousel', role='button', data-slide='prev')
+            span.glyphicon.glyphicon-chevron-left
+          a.right.carousel-control(href='#myCarousel', role='button', data-slide='next')
+            span.glyphicon.glyphicon-chevron-right
+        ///CAROUSEL END
