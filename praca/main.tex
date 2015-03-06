@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage[slovak]{babel}
+\usepackage{marvosym}
 \usepackage{mathtools}
 \usepackage{url}            % lepsie zobrazovanie URL
 \usepackage{bibentry}       % zobrazovanie celych odkazov v texte
@@ -19,9 +20,9 @@
 \def\mfauthor{Peter Kovács}
 \def\mfadvisor{RNDr. Michal Rjaško, PhD. }
 \def\mfplacedate{Bratislava, \mfyear}
-\def\odbor{2508 Informatka} %aj cislo odboru je povinne a je to podla katedry/odboru, na ktorom je autor
+\def\odbor{2508 Informatika} %aj cislo odboru je povinne a je to podla katedry/odboru, na ktorom je autor
 \def\program{ Informatika }
-\def\stredisko{ Katedra Informatiky }
+\def\stredisko{ Katedra informatiky }
 
 \begin{document}     
 
@@ -113,7 +114,7 @@
 
 \newpage 
 \thispagestyle{empty}
-\hspace{-1cm}\includegraphics[width=1.2\textwidth]{images/bcpeto}
+\hspace{-1cm}\includegraphics[width=1.2\textwidth]{images/zadanie}
 
 % --- Koniec zadania
 
@@ -203,9 +204,11 @@ English abstract
 
 \input uvod.tex 
 
+\input kryptografia.tex
+
 \input problem.tex
 
-\input kryptografia.tex
+\input schema.tex
 
 \input Implementacia.tex
 
@@ -231,6 +234,18 @@ English abstract
 \begin{thebibliography}{1}
 
 \bibitem{HOAC} Alfred J. Menezes - Paul C. van Oorschot - Scott A. Vanstone, 1996, Handbook of Applied Cryptography, CRC Press
+
+\bibitem{mega} Mega, Februar 2015,  [online] Dostupné na internete: <https://mega.co.nz/\#doc>
+
+\bibitem{viivo} Viivo, Februar 2015,  [online] Dostupné na internete: <https://viivo.com/>
+
+\bibitem{boxcryptor} BoxCryptor, Februar 2015,  [online] Dostupné na internete: <https://www.boxcryptor.com/en>
+
+\bibitem{wuala} Wuala, Februar 2015,  [online] Dostupné na internete: <https://www.wuala.com/en/learn/technology>
+
+\bibitem{spideroak} SpiderOak, Februar 2015,  [online] Dostupné na internete: <https://spideroak.com/>
+
+\bibitem{cryptree} Grolimund D. - Meisser L. - Schmid S. - Wattenhofer R., Cryptree: A Folder Tree Structure for Cryptographic File Systems, [online] Dostupné na internete: <http://dcg.ethz.ch/publications/srds06.pdf>
  
 %\bibitem{br1} MOLINA H. G. - ULLMAN J. D. - WIDOM J., 2002, Database Systems, Upper Saddle River : Prentice-Hall, 2002, 1119 s., Pearson International edition, 0-13-098043-9
 

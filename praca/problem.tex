@@ -1,16 +1,28 @@
 \chapter{Súčasné riešenia}
 
-V prvej kapitole popíšeme čo sú vlastne cloudové úložiská, poskytneme prehľad existujúcich riešení šifrovaných úložísk. Uvedieme ich poskytovné služby a spôsob, akým fungujú. V závere kapitoly ich porovnáme s naším riešením.
+V nasledujúcej kapitole popíšeme čo sú vlastne cloudové úložiská, poskytneme prehľad existujúcich riešení šifrovaných úložísk. Uvedieme ich poskytovné služby a spôsob, akým fungujú. V závere kapitoly ich porovnáme s naším riešením.
 
 \section{Cloudové úložiská}
 	Cloudové úložisko je služba ktorá nám umožnuje manipulovať s priestorom ktorý sme si prenajali od poskytovateľa služby. Táto služba by sa mala byť škálovateľná, vieme jednoducho zvačšiť priestor za ktorý platíme, starať o to aby naše dáta boli stále prístupné čo zahŕňa ochranu voči strate a poškodeniu dát poprípade výpadkom siete. 
 	
 \section{Existujúce riešenia na šifrované ukladanie dát}
-	Súčasné služby môžeme rozdeliť do dvoch kategórií. Väčšina z nich poskytuje natívnu aplikáciu do počítača alebo mobilného zariadenia, tá menšia skupina sa zamerala na tvorbu webovej aplikácie prostredníctvom, ktorej užívateľ spravuje svoje dáta. Väčšina služieb sa snaží dodržiavať zásadu "zero-knowledge", ktorá zaručuje užívateľovi, že poskytovateľ cloudového úložiska nebude mať o jeho dátach nijaké informácie. 
+	Súčasné služby môžeme rozdeliť do dvoch kategórií. Väčšina z nich poskytuje natívnu aplikáciu do počítača alebo mobilného zariadenia, tá menšia skupina sa zamerala na tvorbu webovej aplikácie, prostredníctvom ktorej užívateľ spravuje svoje dáta. Šifrovanie prebieha na strane klienta pred prenosom dát do cloud. Väčšina služieb sa snaží dodržiavať zásadu "zero-knowledge", ktorá zaručuje užívateľovi, že poskytovateľ cloudového úložiska nebude mať o jeho dátach nijaké informácie. 
+	
 	\subsubsection{Vlastné cloudové riešenie}
-		Jeden z najznámejších poskytovateľov šifrovaného cloudového úložiska je Mega. Okrem webovskej aplikácie Mega ponúka mobilné aj desktopové aplikácie, ktoré môžu niektorí užívatelia preferovať pred webovým rozhraním. Pri registrácii si zvolíme heslo, ktoré bude použité ako kľúč pri symetrickom šifrovaní našich súborov. Celé šifrovanie prebieha na počítači klienta, takže Mega nemá žiadne informácie o obsahu uloženom v cloude a tiež nepozná naše heslo. Ďalej sú tu služby ako SpiderOak a Wuala, ktoré neposkytujú webové rozhranie a všetky operácie musíme robiť pomocou aplikácie na našom počítači.
+		Jeden z najznámejších poskytovateľov šifrovaného cloudového úložiska je Mega \cite{mega}. Okrem webovskej aplikácie ponúka mobilné aj desktopové aplikácie, ktoré môžu niektorí užívatelia preferovať pred webovým rozhraním. Pri ukladaní súborov alebo zložiek Mega vygeneruje náhodný 128-bitový kľúč a následne dáta zašifruje šifrou AES-128. Všetky kľúče sú dostupné pomocou univerzálneho hesla, ktoré sme si zvolili pri registrácii. To je zahašované kryptografickou hašovacou funkciou a uložené na serveroch. Celé šifrovanie prebieha na počítači klienta, takže Mega nemá žiadne informácie o obsahu uloženom v cloude a nepozná naše heslo. Pri zdieľaní súborov sa používa 2048 RSA kľúčový pár pričom jeho univerzálna časť je zašifrovaná univerzálnym kľúčom. Služba ponúka 50 GB zdarma a za 500 GB používateľ zaplatí 9,99\$.
+		
+		Služby SpiderOak \cite{spideroak} a Wuala \cite{wuala} tiež využívajú vlastný cloud, ale neposkytujú webové rozhranie a všetky operácie musíme robiť pomocou aplikácie na našom počítači. SpiderOak pracuje na podobných princípoch ako Mega ale namiesto AES-128 používa AES-256. Zadarmo sú dostupné 2 GB úložného priestoru a za 12\$ mesačne je možné ho rozšíriť na 1 TB.
+		
+		 Wuala využíva systém Cryptree \cite{cryptree} v ktorom používa AES-256 na šifrovanie, RSA 2048 na podpisy a zdieľanie dát a SHA-256 na zabezpečenie integrity. Cena sa pohybuje od 0,99 \EUR{} za 5 GB do 159,90 \EUR{} za 2 TB.
+		 
+		 Všetky tri služby podporujú Windows, Mac, Linux, Android a iOS.
+		
 	\subsubsection{Využívanie dostupných cloudových riešení}
-		Viivo na rozdiel od Megy využíva už existujúce cloudové riešenia, ktoré poskytujú API na prácu so súbormi a vybudoval tak vrstvu medzi klientom a jeho obľúbeným cloudovým úložiskom ako napríklad Dropbox, Box alebo SkyDrive. Boxcryptor je ďalšia služba veľmi podobná Viivu, ktorá tiež vytvorila vrstvu medzi cloudom a požívateľom. Viivo ani Boxcryptor neposkytujú webové rozhranie, takže používatel je nútený inštalovať dodatočný software. 
+		Viivo \cite{viivo} na rozdiel od Megy využíva už existujúce cloudové riešenia, ktoré poskytujú API na prácu so súbormi a vybudoval tak vrstvu medzi klientom a jeho obľúbeným cloudovými úložiskami Drive, Dropbox, Box alebo SkyDrive. Viivo vytvorí 2048 bitový kľúčový pár, ktorý sa používa pri zdieľaní dát. Kľúč je zabezpečený pomocou hesla, ktoré si užívateľ zvolí pri registrácii. Pre súkromné využitie je zadarmo, firmy si priplatia od 4,99 do 9,99 mesačne.
+		
+		Boxcryptor \cite{boxcryptor} je ďalšia služba podobná Viivu, ktorá vytvorila vrstvu medzi cloudom a požívateľom. Podporuje rovnaké cloudy ako Viivo a naviac ešte SugarSync. Kryptografia funguje na rovnakých princípoch ako Mega, ale využíva silnejšie kľúče, t.j. AES-256 pri symetrickej a RSA s kľúčom dĺžky 4096 bitov pri asymetrickej kryptografii. Základné šifrovanie je poskytované zadarmo, neobmedzený firemný účet stojí 96\$ ročne.
+		
+		Viivo ani Boxcryptor neposkytujú webové rozhranie, takže používateľ je nútený inštalovať dodatočný softvér ktorý je kompatibilný s Windowsom, Macom ako aj s iOSom a Androidom.
 
 \section{Cieľ práce}
 	Pre naše riešenie sme sa rozhodli skombinovať dva prístupy. Rozhodli sme sa používať už existujúce cloudové úložiská ku ktorým vytvoríme webovské rozhranie. Netreba ho inštalovať, čo zvyšuje pouziteľnosť a podporuje okrem počítačov aj mobilné zariadenia. Keby sme sa rozhodli pre natívnu aplikáciu, nielen že by sme potrebovali naprogramovať aj mobilný variant, ale aj by sme zaťažovali cieľového užívateľa sťahovaním a inštalovaním. Preto sme vytvorili jednoduché a prehľadné prostredie, z ktorého bude možné využívať viacero úložísk. Pre testovanie a koncept návrhu budeme využívať cloudové úložisko firmy Google, Drive. Našu službu sme sa rozhodli nazvať \serviceName.

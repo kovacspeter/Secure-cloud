@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.11.26)  15 FEB 2015 16:20
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.11.26)  4 MAR 2015 21:34
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -291,6 +291,9 @@ Package babel Info: Making ' an active character on input line 129.
 \cs@wordlen=\count90
 Package babel Info: Making - an active character on input line 294.
 ))
+(/usr/local/texlive/2014/texmf-dist/tex/latex/marvosym/marvosym.sty
+Package: marvosym 2011/07/20 v2.2 Martin Vogel's Symbols font definitions
+)
 (/usr/local/texlive/2014/texmf-dist/tex/latex/mh/mathtools.sty
 Package: mathtools 2014/05/21 v1.14 mathematical typesetting tools
 
@@ -391,18 +394,18 @@ No file main.bbl.
 (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
  (/usr/local/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count107
@@ -464,33 +467,33 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Overfull \hbox (56.6272pt too wide) in paragraph at lines 45--54
+Overfull \hbox (56.6272pt too wide) in paragraph at lines 46--55
 []$[]$ 
  []
 
 [1
 
 {/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (56.6272pt too wide) in paragraph at lines 79--97
+Overfull \hbox (56.6272pt too wide) in paragraph at lines 80--98
 []$[]$ 
  []
 
-[2] <images/bcpeto.jpeg, id=11, 2561.57pt x 3523.1625pt>
-File: images/bcpeto.jpeg Graphic file (type jpg)
+[2] <images/zadanie.pdf, id=11, 597.50786pt x 845.04686pt>
+File: images/zadanie.pdf Graphic file (type pdf)
 
-<use images/bcpeto.jpeg>
-Package pdftex.def Info: images/bcpeto.jpeg used on input line 116.
-(pdftex.def)             Requested size: 467.99881pt x 643.65726pt.
+<use images/zadanie.pdf>
+Package pdftex.def Info: images/zadanie.pdf used on input line 117.
+(pdftex.def)             Requested size: 467.99881pt x 661.8804pt.
 
-Overfull \hbox (67.17088pt too wide) in paragraph at lines 116--117
+Overfull \hbox (67.17088pt too wide) in paragraph at lines 117--118
 [] [] 
  []
 
 
-Overfull \vbox (95.15726pt too high) has occurred while \output is active []
+Overfull \vbox (113.3804pt too high) has occurred while \output is active []
 
 
-[3 <./images/bcpeto.jpeg>] [1
+[3 <./images/zadanie.pdf>] [1
 
 ] [2] [3] (./main.toc [4
 
@@ -505,34 +508,18 @@ Overfull \vbox (95.15726pt too high) has occurred while \output is active []
 
 [6
 
-] (./uvod.tex) (./problem.tex [1
+] (./uvod.tex) (./kryptografia.tex [1
 
 
 ]
 Kapitola 1.
-
-Overfull \hbox (5.36615pt too wide) in paragraph at lines 3--4
-\OT1/cmr/m/n/12 V pr-vej ka-pi-tole pop^^S^^P^^Tseme ^^Tco s^^Su vlastne clou-d
-ov^^Se ^^Sulo^^Tzisk^^Sa, po-skyt-neme prehl[]ad
- []
-
-[2
-
-] [3])
-Overfull \hbox (2.47337pt too wide) in paragraph at lines 24--207
-\OT1/cmr/m/n/12 ro-z-hra-nie, ^^Tco zat[]a^^Tzuje pou^^Tz^^S^^Pvatel[]a ok-rem 
-re-gistr^^Sacie aj in^^Tstal^^Saciami mo-biln^^Sych
- []
-
-(./kryptografia.tex [4]
-Kapitola 2.
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 10.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 10.
- [5
+ [2
 
 ]
 Overfull \hbox (6.53365pt too wide) in paragraph at lines 16--17
@@ -540,52 +527,114 @@ Overfull \hbox (6.53365pt too wide) in paragraph at lines 16--17
 i, ktor^^Se bu-deme pou^^Tz^^S^^Pvat[]. 
  []
 
-[6]
-Overfull \hbox (3.07628pt too wide) in paragraph at lines 37--38
+[3]
+Overfull \hbox (0.58104pt too wide) in paragraph at lines 33--35
+\OT1/cmr/m/n/12 kl[]^^Su^^Tc $\OML/cmm/m/it/12 d$ \OT1/cmr/m/n/12 tak^^Sy aby p
+la-tilo $\OML/cmm/m/it/12 D[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 E[]\OT1/cmr/m/n/
+12 (\OML/cmm/m/it/12 m\OT1/cmr/m/n/12 )) = \OML/cmm/m/it/12 m$\OT1/cmr/m/n/12 .
+ Aby bola t^^Sato vlast-nost[] za-bezpe^^Tcen^^Sa,
+ []
+
+
+Overfull \hbox (20.2658pt too wide) in paragraph at lines 33--35
+\OT1/cmr/m/n/12 to-riz^^Sacia alebo v^^Sypo^^Tcet diskr^^Setneho lo-ga-ritmu. K
+l[]^^Su^^Tc $\OML/cmm/m/it/12 d$ \OT1/cmr/m/n/12 bu-deme naz^^Syvat[] priv^^Sat
+nym
+ []
+
+
+Overfull \hbox (9.71869pt too wide) in paragraph at lines 33--35
+\OT1/cmr/m/n/12 a $\OML/cmm/m/it/12 e$ \OT1/cmr/m/n/12 ve-rejn^^Sym kl[]^^Su^^T
+com. Pri vyu^^Tzit^^S^^P asy-met-ric-kej kryp-to-gra-fie n^^Sam sta^^Tc^^S^^P u
+chov^^Savat[]
+ []
+
+
+Overfull \hbox (3.07628pt too wide) in paragraph at lines 40--41
 \OT1/cmr/m/n/12 Tu by sa ho-dilo po-pi-sat ne-jake ^^Tsifrovacie veci ktor^^Se 
 bu-dem pouz^^S^^Pvat[]. Napr^^S^^Pklad
  []
 
+) (./problem.tex [4] [5]
+Kapitola 2.
+[6
 
-Overfull \hbox (2.82797pt too wide) in paragraph at lines 37--38
-\OT1/cmr/m/n/12 ECC, AES popr^^S^^Ppade ne-jake pas-sword de-riv^^Satory sc-ryp
-t/bcrypt/pbkdf2 alebo
+]
+LaTeX Font Info:    Try loading font information for U+mvs on input line 16.
+ (/usr/local/texlive/2014/texmf-dist/tex/latex/marvosym/umvs.fd)
+Overfull \hbox (8.86531pt too wide) in paragraph at lines 16--17
+[]\OT1/cmr/m/n/12 Wuala vyu^^Tz^^S^^Pva syst^^Sem Cryp-tree [[]] v kto-rom pou^
+^Tz^^S^^Pva AES-256 na ^^Tsifrovanie,
  []
 
-[7]) (./Implementacia.tex [8]
-Kapitola 3.
-[9
+[7] [8])
+Overfull \hbox (2.47337pt too wide) in paragraph at lines 36--210
+\OT1/cmr/m/n/12 ro-z-hra-nie, ^^Tco zat[]a^^Tzuje pou^^Tz^^S^^Pvatel[]a ok-rem 
+re-gistr^^Sacie aj in^^Tstal^^Saciami mo-biln^^Sych
+ []
 
-]) (./zaver.tex [10]) [11
+(./schema.tex [9]
+Kapitola 3.
+) (./Implementacia.tex [10
+
+]
+Kapitola 4.
+) (./zaver.tex [11
+
+]) [12
 
 ]
 No file main.bbl.
-[12
+
+Underfull \hbox (badness 10000) in paragraph at lines 238--239
+[]\OT1/cmr/m/n/12 Mega, Feb-ruar 2015, [on-line] Do-stupn^^Se na in-ter-nete:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 242--243
+[]\OT1/cmr/m/n/12 BoxCryptor, Feb-ruar 2015, [on-line] Do-stupn^^Se na in-ter-n
+ete:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 244--245
+[]\OT1/cmr/m/n/12 Wuala, Feb-ruar 2015, [on-line] Do-stupn^^Se na in-ter-nete:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 246--247
+[]\OT1/cmr/m/n/12 SpiderOak, Feb-ruar 2015, [on-line] Do-stupn^^Se na in-ter-ne
+te:
+ []
+
+[13
 
 
 
 ] (./main.aux) ) 
 Here is how much of TeX's memory you used:
- 3620 strings out of 493117
- 49425 string characters out of 6135432
- 126193 words of memory out of 5000000
- 6997 multiletter control sequences out of 15000+600000
- 10429 words of font info for 37 fonts, out of 8000000 for 9000
+ 3909 strings out of 493117
+ 52168 string characters out of 6135432
+ 127977 words of memory out of 5000000
+ 7279 multiletter control sequences out of 15000+600000
+ 10850 words of font info for 38 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,9n,23p,854b,249s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,9n,23p,954b,249s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmbx12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmcsc10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmmi12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmmi8.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/
 cmr12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-r17.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl
-12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy1
-0.pfb>
-Output written on main.pdf (21 pages, 634317 bytes).
+r17.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8
+.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.
+pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.p
+fb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb
+></usr/local/texlive/2014/texmf-dist/fonts/type1/public/marvosym/marvosym.pfb>
+Output written on main.pdf (22 pages, 218622 bytes).
 PDF statistics:
- 105 PDF objects out of 1000 (max. 8388607)
- 72 compressed objects within 1 object stream
+ 232 PDF objects out of 1000 (max. 8388607)
+ 158 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
