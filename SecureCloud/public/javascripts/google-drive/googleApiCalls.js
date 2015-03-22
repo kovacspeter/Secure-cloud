@@ -11,7 +11,6 @@ var apiKey = 'AIzaSyBdkCmzx8vRPaJ9C-kn2U0tDsGK8MbmHaA';
 // To enter one or more authentication scopes, refer to the documentation for the API.
 var scopes = 'https://www.googleapis.com/auth/drive';
 
-
 /**
  * Use a button to handle authentication the first time.
  */
@@ -34,23 +33,12 @@ function checkAuth() {
  */
 function handleAuthResult(authResult) {
     if (authResult && !authResult.error) {
-        log('auth success');
+        console.log('auth success');
     } else {
-        log('auth failed');
+        console.log('auth failed');
     }
 }
 
-/**
- * Check if the current user has authorized the application after clicking on Authorize button.
- */
-function handleAuthClick(event) {
-    gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
-    return false;
-}
-
-function log(text) {
-    console.log(text);
-}
 /**
  * Retrieve a file metadata of files belonging to a folder.
  *
@@ -70,6 +58,14 @@ function getFileMetadata(fileId, callback) {
 
         request.execute(callback);
     });
+}
+
+/**
+ * Check if the current user has authorized the application after clicking on Authorize button.
+ */
+function handleAuthClick(event) {
+    gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
+    return false;
 }
 
 /**
@@ -114,6 +110,103 @@ function insertFile(title, callback) {
 }
 
 /**
+ * Generates random string from sjcl.random
+ *
+ * @param {Function} callback Callback function to call when string is generated
+ */
+function createRandomString (callback) {
+    var randomBase64String = '';
+    var checkReadyness;
+
+    checkReadyness = setInterval(function () {
+        if(sjcl.random.isReady(10)) {
+            randomWords = sjcl.random.randomWords(4,10);
+            for(var i in randomWords) {
+                randomBase64String += btoa(randomWords[i]);
+            }
+            clearInterval(checkReadyness);
+            callback(randomBase64String);
+        }
+    }, 1);
+}
+
+/**
+ * Returns public key of specified user and call callback function with public key as parameter
+ *
+ * @param {String} userEmail Email of user whose public key is returned
+ * @param {Function} callback Callback function to call when pub key is acquired
+ */
+function getPubKey(userEmail, callback) {
+    $.post('/getPubKey', {'email': userEmail}, function(res) {
+        //DESERIALIZING PUBLIC KEY
+        var pub = new sjcl.ecc.elGamal.publicKey(
+            sjcl.ecc.curves.c256,
+            sjcl.codec.base64.toBits(res)
+        );
+        callback(pub);
+    });
+}
+
+/**
+ * Returns private key of logged user and call callback function with private key as parameter
+ *
+ * @param {Function} callback Callback function to call when priv key is acquired
+ */
+function getPrivKey(callback) {
+    $.get('/getPrivKey', function(res) {
+        // DECRYPTS PRIVATE KEY WITH USERS KEY
+        var userKey = prompt('Please enter your password');
+        var privKey = sjcl.decrypt(userKey, res);
+
+        // DESERIALIZING PRIVATE KEY
+        var sec = new sjcl.ecc.elGamal.secretKey(
+            sjcl.ecc.curves.c256,
+            sjcl.ecc.curves.c256.field.fromBits(sjcl.codec.base64.toBits(privKey))
+        );
+        callback(sec);
+    });
+}
+
+/**
+ * Returns file key of logged user and call callback function with key as parameter
+ *
+ * @param {Function} callback Callback function to call when file key is acquired
+ */
+function getFileKey(fileId, callback) {
+    $.post('/getFileKey', {'fileId': fileId}, function(res) {
+        callback(res);
+    });
+}
+
+
+/**
+ * Saves keypair(private key encrypted) in database on server
+ *
+ * @param {object} keyPair containing private and public key
+ * @param {Function} callback will be called with respond from server
+ */
+function saveKeyPair(keyPair, callback) {
+    $.post('/saveKeypair', keyPair ,function(res) {
+        callback(res);
+    });
+}
+
+/**
+ * Calls sjcl to generate asymetric keypair
+ *
+ * @returns {*}
+ */
+function generateKeyPair(callback) {
+    callback(sjcl.ecc.elGamal.generateKeys(256));
+}
+
+
+function shareFile() {
+
+}
+
+
+/**
  * Update an existing file's metadata and content.
  *
  * @param {String} metadata Metadata of the file to update.
@@ -122,27 +215,83 @@ function insertFile(title, callback) {
  */
 function updateFileResumable(metadata, fileData, callback) {
     var accessToken = gapi.auth.getToken().access_token;
+    var email = $.cookie('email');
 
-    var reader = new FileReader();
-    reader.readAsArrayBuffer(fileData);
-    reader.onload = function() {
-        var key = prompt("Give key used for file encryption","password");
-        var bits = sjcl.codec.bytes.toBits(new Uint8Array(reader.result));
-        var crypt = sjcl.encrypt(key, bits);
-        var blob = new Blob([crypt]);
+    //GET PUBLIC KEY OF LOGGED USER
+    getPubKey(email, function(pubKey) {
 
-        var uploader = new MediaUploader({
-            metadata: metadata,
-            file: blob,
-            token: accessToken,
-            onComplete: callback,
-            onError: function(err) {
-                log(err);
-            }
+        //GENERATE PASSWORD FOR FILE ENCRYPTION
+        createRandomString(function (passString) {
+
+            // FILE UPLOAD
+            var reader = new FileReader();
+            reader.readAsArrayBuffer(fileData);
+            reader.onload = function() {
+                //FILE ENCRYPTION
+                var bits = sjcl.codec.bytes.toBits(new Uint8Array(reader.result));
+                var crypt = sjcl.encrypt(passString, bits);
+                var blob = new Blob([crypt]);
+
+                //ACTAUAL UPLOADING
+                var uploader = new MediaUploader({
+                    metadata: metadata,
+                    file: blob,
+                    token: accessToken,
+                    onComplete: callback,
+                    onError: function(err) {
+                        log(err);
+                    }
+                });
+                uploader.upload();
+            };
+
+            //FILE PASSWORD ENCRYPTION
+            var encPass = sjcl.encrypt(pubKey, passString);
+
+            //SENDING ENCRYPTED FILE PASSWORD TO SERVER
+            $.post('/saveFileKey', encPass, undefined);
+
+
+
+            ////TODO This should be done alongside with registration
+            ////------------------------------------------------------
+            //if (pubKey == undefined) {
+            //    console.log('generating keypair');
+            //    generateKeyPair(function(keys) {
+            //
+            //        //SERIALIZING KEYPAIR
+            //        var pub = keys.pub.get();
+            //        var sec = keys.sec.get();
+            //        var keypair = {
+            //            pub: sjcl.codec.base64.fromBits(pub.x.concat(pub.y)),
+            //            priv: sjcl.codec.base64.fromBits(sec)
+            //        };
+            //
+            //        // ENCRYPTING USERS PRIVATE KEY
+            //        var passwd = prompt('Enter your password', 'Enter your password here');
+            //        var enc = sjcl.encrypt(passwd, keypair.priv);
+            //        keypair.priv = enc;
+            //
+            //        // SENDING KEYPAIR TO SERVER
+            //        console.log('sending keypair');
+            //        console.log(keypair.pub);
+            //        console.log(keypair.priv);
+            //        saveKeyPair({
+            //            'email': email,
+            //            'pub': keypair.pub,
+            //            'priv': keypair.priv
+            //        }, console.log);
+            //
+            //        pubKey = keypair.pub;
+            //    });
+            //
+            //
+            //}
+            ////----------------------------------------------------
         });
-        log('sending to cloud');
-        uploader.upload();
-    }
+    });
+
+
 }
 
 /**
@@ -157,25 +306,34 @@ function downloadFileFromDrive(file, callback) {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', file.downloadUrl);
         xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-        //ITS ENCRYPTED FILE
+        // ITS ENCRYPTED FILE
         if(file.title.indexOf('.sc') > -1) {
             xhr.onload = function() {
-                var key = prompt("Please enter key for file decryption","password");
-                var base64decrypt = sjcl.decrypt(key, xhr.response, {'raw': 1});
-                var byteArray = new Uint8Array(sjcl.codec.bytes.fromBits(base64decrypt));
-                var title = '';
-                var titleArray = file.title.split('.');
-                for(i=0; i<titleArray.length - 1; i++){
-                    title = title + "." + titleArray[i];
-                }
-                log(byteArray);
-                callback({
-                    'title': title,
-                    'data': byteArray
+                getPrivKey(function(privKey) {
+                    getFileKey(file.id, function(fileKey) {
+                        // DECRYPTS FILE KEY WITH USERS PRIVATE KEY
+                        var key = sjcl.decrypt(privKey, fileKey);
+                        // DECRYPT FILE
+                        var base64decrypt = sjcl.decrypt(key, xhr.response, {'raw': 1});
+                        var byteArray = new Uint8Array(sjcl.codec.bytes.fromBits(base64decrypt));
+
+                        // ASSIGN TITLE WITHOUT .SC TO FILE
+                        var title = '';
+                        var titleArray = file.title.split('.');
+                        for(i=0; i<titleArray.length - 1; i++){
+                            title = title + "." + titleArray[i];
+                        }
+                        callback({
+                            'title': title,
+                            'data': byteArray
+                        });
+                    });
                 });
             };
-        //ITS NOT ENCRYPTED FILE!!
-        }else {
+
+        }
+        // ITS NOT ENCRYPTED FILE
+        else {
             xhr.responseType = 'arraybuffer';
             xhr.onload = function() {
                 var byteArray = new Uint8Array(xhr.response);
@@ -186,12 +344,12 @@ function downloadFileFromDrive(file, callback) {
             };
         }
         xhr.onerror = function() {
-            log("ERROR! Daco si pokazil :D");
+            console.log("ERROR! Daco si pokazil :D");
             callback(null);
         };
         xhr.send();
     } else {
-        log("ERROR MISSING DOWNLOAD URL");
+        console.log("ERROR MISSING DOWNLOAD URL");
         callback(null);
     }
 }

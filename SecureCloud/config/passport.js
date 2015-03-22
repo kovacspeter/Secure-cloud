@@ -1,11 +1,10 @@
 // config/passport.js
 
 // load all the things we need
-var LocalStrategy   = require('passport-local').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 // load up the user model
-var User            = require('../models/user');
+var User           = require('../models/user');
 
 // load the auth variables
 //var configAuth = require('./auth');
@@ -73,10 +72,12 @@ module.exports = function(passport) {
                             var newUser            = new User();
 
                             // set all of the google information in our user model
-                            newUser.google.id    = profile.id;
-                            newUser.google.token = token;
-                            newUser.google.name  = profile.displayName;
-                            newUser.google.email = profile.emails[0].value; // pull the first email
+                            newUser.google.id         = profile.id;
+                            newUser.google.token      = token;
+                            newUser.google.name       = profile.displayName;
+                            newUser.google.email      = profile.emails[0].value; // pull the first email
+                            newUser.google.publicKey  = undefined;
+                            newUser.google.privateKey = undefined;
 
                             // save our user to the database
                             newUser.save(function(err) {

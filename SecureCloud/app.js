@@ -1,5 +1,4 @@
 var express = require('express');
-
 var passport = require('passport');
 var mongoose = require('mongoose');
 var session = require('express-session');
@@ -22,16 +21,11 @@ mongoose.connect('mongodb://127.0.0.1:27017/securecloud'); // connect to our dat
 // configure passport module
 require('./config/passport')(passport); // pass passport for configuration
 
-
 app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-
-app.use('/', index);
-app.use('/drive', drive);
-app.use('/about', about);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -48,7 +42,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+app.use('/', index);
+app.use('/drive', drive);
+app.use('/about', about);
 
 
 

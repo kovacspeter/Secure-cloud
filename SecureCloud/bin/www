@@ -1,9 +1,28 @@
 #!/usr/bin/env node
-var debug = require('debug')('SecureCloud');
 var app = require('../app');
+var http = require('http');
+//var webSocketServer = require('websocket').server;
 
-app.set('port', process.env.PORT || 9117);
+var server = http.createServer(app).listen(9117);
 
-var server = app.listen(app.get('port'), function() {
-  debug('Express server listening on port ' + server.address().port);
-});
+//console.log(server);
+//var clientId = 0;
+//var wsServer = new webSocketServer({httpServer: server, path: '/websocket'});
+//wsServer.on('request', function(request) {
+//  var connection = request.accept(null, request.origin);
+//
+//  // This is the most important callback for us, we'll handle
+//  // all messages from users here.
+//  connection.on('message', function(message) {
+//    if (message.type === 'utf8') {
+//      // process WebSocket message
+//    }
+//    console.log(message.utf8Data.pub);
+//    console.log(message.utf8Data.priv);
+//
+//  });
+//
+//  connection.on('close', function(connection) {
+//    // close user connection
+//  });
+//});

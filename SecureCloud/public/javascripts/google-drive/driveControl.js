@@ -1,5 +1,5 @@
 /**
- * retrieve all chidrens of root folder. When finished for appends each children to html of where.
+ * Retrieve all chidrens of root folder. When finished for appends each children to html of where.
  * @param where element where drive content will be shown
  * @param folder folder(id) in drive to be shown
  */
@@ -55,12 +55,13 @@ function showMyDrive(where, folder) {
  * Uploads file from fileform to google drive storage
  */
 function uploadFile() {
-    log("preparing upload");
-    updateFileResumable({'title': $('input#uplFile')[0].files[0].name + '.sc'},$('input#uplFile')[0].files[0], function (uplResp) {
-        //log("update response: " + uplResp);
-        log("Successfully uploaded");
-    });
-
+    if ($('input#uplFile')[0].files[0] != undefined){
+        updateFileResumable({'title': $('input#uplFile')[0].files[0].name + '.sc'},$('input#uplFile')[0].files[0], function (uplResp) {
+            // possible to add callback
+        });
+    } else {
+        alert('Choose file to upload first');
+    }
 }
 
 
