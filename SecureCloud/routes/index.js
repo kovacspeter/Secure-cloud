@@ -42,25 +42,29 @@ router.get('/logout', function(req, res) {
 });
 
 router.post('/saveKeypair', isLoggedIn, function(req,res) {
-  User.findOne({ 'google.email' : req.body.email }, function(err, user) {
+  var id = sjcl.decrypt(ultraSecretKey, req.cookies.user);
+
+  User.findOne({ 'google.id' : id }, function(err, user) {
     // if there is an error, stop everything and return that
     // ie an error connecting to the database
     if (err)
       return done(err);
-    else if(user.google.publicKey == undefined) {
-      //user.google.publicKey = req.pub;
-      //user.google.privateKey = req.priv;
-      //user.save(function(err) {
-      //  if (err)
-      //    throw err;
-      //
-      //  // if successful, return the new user
-      //  return done(null, newUser);
-      //});
-      console.log(user);
-      console.log(req.body);
-      res.writeHead(200, {'Content-Type': 'text/plain' });
-      res.end('Keypair saved!');
+    else if (user != undefined) {
+      if(user.google.publicKey == undefined) {
+        //user.google.publicKey = req.pub;
+        //user.google.privateKey = req.priv;
+        //user.save(function(err) {
+        //  if (err)
+        //    throw err;
+        //
+        //  // if successful, return the new user
+        //  return done(null, newUser);
+        //});
+        console.log(user);
+        console.log(req.body);
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end('Keypair saved!');
+      }
     }
     else {
       res.writeHead(200, {'Content-Type': 'text/plain' });
@@ -122,6 +126,25 @@ router.post('getFileKey', isLoggedIn, function(req, res) {
     } else {
       res.writeHead(404, {'Content-Type': 'text/plain' });
       res.end('No such file');
+    }
+  });
+});
+
+router.get('/isRegistered', isLoggedIn, function(req, res) {
+  var email = req.cookies.email;
+  User.findOne({ 'google.email' : email }, function(err, user) {
+    // if there is an error, stop everything and return that
+    // ie an error connecting to the database
+    if (err) {
+      return done(err);
+    }
+    else if(user.google.publicKey != undefined) {
+      res.writeHead(200, {'Content-Type': 'text/plain' });
+      res.end('true');
+    }
+    else {
+      res.writeHead(200, {'Content-Type': 'text/plain' });
+      res.end('false');
     }
   });
 });
@@ -193,7 +216,7 @@ router.get('/auth/google/callback',
     }));
 
 router.get('/setcookie', function (req, res) {
-  res.cookie('user', sjcl.encrypt(ultraSecretKey, req.user.google.id));
+  res.cookie('user', sjcl.encrypt(ultraSecretKey, req.user.google.id)); //TODO: cookies timeout replay attack
   res.cookie('email', req.user.google.email);
   res.redirect('/drive');
 });

@@ -31,4 +31,12 @@ block content
       $('#uploadFile').click(function() {
         uploadFile()
       });
-       //TODO upload file disabled until form filled
+       // TODO: upload file disabled until form filled
+      $.get('isRegistered', function(res) {
+        console.log('checking if registerd');
+        console.log(res);
+        if (res == 'false') {
+          console.log('generating');
+          generateKeyPair(function () {});
+        }
+      });

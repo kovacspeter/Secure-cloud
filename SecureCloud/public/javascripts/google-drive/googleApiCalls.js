@@ -34,6 +34,7 @@ function checkAuth() {
 function handleAuthResult(authResult) {
     if (authResult && !authResult.error) {
         console.log('auth success');
+
     } else {
         console.log('auth failed');
     }
@@ -163,6 +164,7 @@ function getPrivKey(callback) {
             sjcl.ecc.curves.c256,
             sjcl.ecc.curves.c256.field.fromBits(sjcl.codec.base64.toBits(privKey))
         );
+
         callback(sec);
     });
 }
@@ -186,21 +188,39 @@ function getFileKey(fileId, callback) {
  * @param {Function} callback will be called with respond from server
  */
 function saveKeyPair(keyPair, callback) {
-    $.post('/saveKeypair', keyPair ,function(res) {
-        callback(res);
+    $.post('/saveKeypair', keyPair, function (res2) {
+        callback(res2);
     });
 }
 
 /**
- * Calls sjcl to generate asymetric keypair
+ * Calls sjcl to generate asymetric keypair encrypt private key and save pair to server
  *
  * @returns {*}
  */
+////TODO This should be done alongside with registration
 function generateKeyPair(callback) {
-    callback(sjcl.ecc.elGamal.generateKeys(256));
+    var keys = sjcl.ecc.elGamal.generateKeys(256);
+
+    //SERIALIZING KEYPAIR
+    var pub = keys.pub.get();
+    var sec = keys.sec.get();
+    var serializedKeyPair = {
+        pub: sjcl.codec.base64.fromBits(pub.x.concat(pub.y)),
+        priv: sjcl.codec.base64.fromBits(sec)
+    };
+
+    // ENCRYPTING USERS PRIVATE KEY
+    var passwd = prompt('Enter your password', 'Enter your password here');
+    var enc = sjcl.encrypt(passwd, serializedKeyPair.priv);
+    serializedKeyPair.priv = enc;
+
+    // SENDING KEYPAIR TO SERVER
+    console.log('saving');
+    saveKeyPair(serializedKeyPair, callback);
 }
 
-
+// TODO
 function shareFile() {
 
 }
@@ -232,7 +252,7 @@ function updateFileResumable(metadata, fileData, callback) {
                 var crypt = sjcl.encrypt(passString, bits);
                 var blob = new Blob([crypt]);
 
-                //ACTAUAL UPLOADING
+                //ACTUAL UPLOADING
                 var uploader = new MediaUploader({
                     metadata: metadata,
                     file: blob,
@@ -250,44 +270,6 @@ function updateFileResumable(metadata, fileData, callback) {
 
             //SENDING ENCRYPTED FILE PASSWORD TO SERVER
             $.post('/saveFileKey', encPass, undefined);
-
-
-
-            ////TODO This should be done alongside with registration
-            ////------------------------------------------------------
-            //if (pubKey == undefined) {
-            //    console.log('generating keypair');
-            //    generateKeyPair(function(keys) {
-            //
-            //        //SERIALIZING KEYPAIR
-            //        var pub = keys.pub.get();
-            //        var sec = keys.sec.get();
-            //        var keypair = {
-            //            pub: sjcl.codec.base64.fromBits(pub.x.concat(pub.y)),
-            //            priv: sjcl.codec.base64.fromBits(sec)
-            //        };
-            //
-            //        // ENCRYPTING USERS PRIVATE KEY
-            //        var passwd = prompt('Enter your password', 'Enter your password here');
-            //        var enc = sjcl.encrypt(passwd, keypair.priv);
-            //        keypair.priv = enc;
-            //
-            //        // SENDING KEYPAIR TO SERVER
-            //        console.log('sending keypair');
-            //        console.log(keypair.pub);
-            //        console.log(keypair.priv);
-            //        saveKeyPair({
-            //            'email': email,
-            //            'pub': keypair.pub,
-            //            'priv': keypair.priv
-            //        }, console.log);
-            //
-            //        pubKey = keypair.pub;
-            //    });
-            //
-            //
-            //}
-            ////----------------------------------------------------
         });
     });
 
