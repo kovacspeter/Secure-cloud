@@ -15,9 +15,9 @@ footer {
     border-bottom-width: thin;
 }
 
-#myGoogleDrive #driveButtons a {
-    margin: 0.25em;
-}
+/*#myGoogleDrive #driveButtons a {*/
+    /*margin: 0.25em;*/
+/*}*/
 /* Carousel base class */
 .carousel {
     height: 300px;

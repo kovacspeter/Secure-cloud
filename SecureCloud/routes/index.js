@@ -51,17 +51,14 @@ router.post('/saveKeypair', isLoggedIn, function(req,res) {
       return done(err);
     else if (user != undefined) {
       if(user.google.publicKey == undefined) {
-        //user.google.publicKey = req.pub;
-        //user.google.privateKey = req.priv;
-        //user.save(function(err) {
-        //  if (err)
-        //    throw err;
-        //
-        //  // if successful, return the new user
-        //  return done(null, newUser);
-        //});
-        console.log(user);
-        console.log(req.body);
+        user.google.publicKey = req.body.pub;
+        user.google.privateKey = req.body.priv;
+        user.save(function(err) {
+          if (err) {
+            console.log(err);
+            throw err;
+          }
+        });
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.end('Keypair saved!');
       }
@@ -91,6 +88,8 @@ router.post('/getPubKey', isLoggedIn, function(req,res) {
   });
 });
 
+
+
 router.get('/getPrivKey', isLoggedIn, function(req, res) {
   var id = sjcl.decrypt(ultraSecretKey, req.cookies.user);
 
@@ -110,19 +109,20 @@ router.get('/getPrivKey', isLoggedIn, function(req, res) {
   });
 });
 
-router.post('getFileKey', isLoggedIn, function(req, res) {
+router.post('/getFileKey', isLoggedIn, function(req, res) {
   var fileId = req.body.fileId;
+  var user  = req.cookies.email;
 
-  File.findOne({ 'id' : fileId }, function(err, file) {
+  File.where('google.user', user).where('google.id', fileId).exec(function(err, fileArr) {
     // if there is an error, stop everything and return that
     // ie an error connecting to the database
     if (err)
       return done(err);
 
     // if the file is found
-    if (file) {
+    if (fileArr.length > 0) {
       res.writeHead(200, {'Content-Type': 'text/plain' });
-      res.end(file.password);
+      res.end(fileArr[0].google.password);
     } else {
       res.writeHead(404, {'Content-Type': 'text/plain' });
       res.end('No such file');
@@ -130,30 +130,13 @@ router.post('getFileKey', isLoggedIn, function(req, res) {
   });
 });
 
-router.get('/isRegistered', isLoggedIn, function(req, res) {
-  var email = req.cookies.email;
-  User.findOne({ 'google.email' : email }, function(err, user) {
-    // if there is an error, stop everything and return that
-    // ie an error connecting to the database
-    if (err) {
-      return done(err);
-    }
-    else if(user.google.publicKey != undefined) {
-      res.writeHead(200, {'Content-Type': 'text/plain' });
-      res.end('true');
-    }
-    else {
-      res.writeHead(200, {'Content-Type': 'text/plain' });
-      res.end('false');
-    }
-  });
-});
-
 router.post('/saveFileKey', isLoggedIn, function(req, res) {
   var password = req.body.password;
   var id = req.body.id;
+  var user = req.body.user;
 
-  File.findOne({ 'id' : id }, function(err, file) {
+
+  File.where('google.user', user).where('google.id', id).exec(function(err, fileArr) {
 
     // if there is an error, stop everything and return that
     // ie an error connecting to the database
@@ -161,15 +144,16 @@ router.post('/saveFileKey', isLoggedIn, function(req, res) {
       return done(err);
 
     // if the file is found
-    if (file) {
+    if (fileArr.length > 0) {
       res.writeHead(404, {'Content-Type': 'text/plain' });
       res.end('File already have key assigned');
     } else {
       // if there is no user found with that google id, create them
       var newFile            = new File();
 
-      newFile.id = id;
-      newFile.password = password;
+      newFile.google.id = id;
+      newFile.google.password = password;
+      newFile.google.user = user;
 
       // save our user to the database
       newFile.save(function(err) {
@@ -181,6 +165,25 @@ router.post('/saveFileKey', isLoggedIn, function(req, res) {
       res.end('File key succesfully saved');
     }
 
+  });
+});
+
+router.get('/isRegistered', isLoggedIn, function(req, res) {
+  var email = req.cookies.email;
+  User.findOne({ 'google.email' : email }, function(err, user) {
+    // if there is an error, stop everything and return that
+    // ie an error connecting to the database
+    if (err) {
+      return done(err);
+    }
+    else if(user.google.publicKey == undefined) {
+      res.writeHead(200, {'Content-Type': 'text/plain' });
+      res.end('false');
+    }
+    else {
+      res.writeHead(200, {'Content-Type': 'text/plain' });
+      res.end('true');
+    }
   });
 });
 
@@ -216,7 +219,7 @@ router.get('/auth/google/callback',
     }));
 
 router.get('/setcookie', function (req, res) {
-  res.cookie('user', sjcl.encrypt(ultraSecretKey, req.user.google.id)); //TODO: cookies timeout replay attack
+  res.cookie('user', sjcl.encrypt(ultraSecretKey, req.user.google.id)); //TODO: replay attack - pridat tam nejaku randomnost
   res.cookie('email', req.user.google.email);
   res.redirect('/drive');
 });

@@ -14,24 +14,24 @@ var scopes = 'https://www.googleapis.com/auth/drive';
 /**
  * Use a button to handle authentication the first time.
  */
-function handleClientLoad() {
+function handleClientLoadGoogle() {
     gapi.client.setApiKey(apiKey);
-    window.setTimeout(checkAuth,1);
-    $('#auth').click(handleAuthClick);
+    window.setTimeout(checkAuthGoogle,1);
+    $('#auth').click(handleAuthClickGoogle);
 }
 
 /**
  * Check if the current user has authorized the application.
  */
-function checkAuth() {
-    gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
+function checkAuthGoogle() {
+    gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResultGoogle);
 }
 /**
  * Called when authorization server replies.
  *
  * @param {Object} authResult Authorization result.
  */
-function handleAuthResult(authResult) {
+function handleAuthResultGoogle(authResult) {
     if (authResult && !authResult.error) {
         console.log('auth success');
 
@@ -47,7 +47,7 @@ function handleAuthResult(authResult) {
  * @param {Function} callback Function to call when the request is complete.
  *
  */
-function getFileMetadata(fileId, callback) {
+function getFileMetadataGoogle(fileId, callback) {
     gapi.client.load('drive', 'v2', function() {
         var request = gapi.client.request({
             'path': 'drive/v2/files/'+ fileId,
@@ -64,9 +64,115 @@ function getFileMetadata(fileId, callback) {
 /**
  * Check if the current user has authorized the application after clicking on Authorize button.
  */
-function handleAuthClick(event) {
-    gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
+function handleAuthClickGoogle(event) {
+    gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResultGoogle);
     return false;
+}
+
+function getSharedWithMeFilesGoogle(callback) {
+    gapi.client.load('drive', 'v2', function() {
+        var request = gapi.client.request({
+            'path': 'drive/v2/files?q=sharedWithMe=true',
+            'method': 'GET'
+        });
+
+        request.execute(callback);
+    });
+}
+
+/**
+ * Print the Permission ID for an email address.
+ *
+ * @param {String} email Email address to retrieve ID for.
+ */
+function printPermissionIdForEmailGoogle(email, callback) {
+    var request = gapi.client.drive.permissions.getIdForEmail({
+        'email': email
+    });
+    request.execute(function(resp) {
+        callback(resp.id);
+    });
+}
+
+/**
+ * Update a permission's role.
+ *
+ * @param {String} fileId ID of the file to update permission for.
+ * @param {String} permissionId ID of the permission to update.
+ * @param {String} newRole The value "owner", "writer" or "reader".
+ */
+function updatePermissionGoogle(fileId, permissionId, newRole, callback) {
+    // First retrieve the permission from the API.
+    var request = gapi.client.drive.permissions.get({
+        'fileId': fileId,
+        'permissionId': permissionId
+    });
+    request.execute(function(resp) {
+        resp.role = newRole;
+        var updateRequest = gapi.client.drive.permissions.update({
+            'fileId': fileId,
+            'permissionId': permissionId,
+            'resource': resp
+        });
+        updateRequest.execute(function(resp) {
+            callback(resp);
+        });
+    });
+}
+
+/**
+ * Insert a new permission.
+ *
+ * @param {String} fileId ID of the file to insert permission for.
+ * @param {String} email User or group e-mail address, domain name or
+ *                       {@code null} "default" type.
+ * @param {String} type The value "user", "group", "domain" or "default".
+ * @param {String} role The value "owner", "writer" or "reader".
+ */
+function insertPermissionGoogle(fileId, email, type, role, callback) {
+    console.log('inserting permissions');
+    var body = {
+        'value': email,
+        'type': type,
+        'role': role
+    };
+    var request = gapi.client.drive.permissions.insert({
+        'fileId': fileId,
+        //'emailMessage': 'You have been granted access for file via SecureCloud platform, due to encryption' +
+        //'you can only access it trough www.securecloud.com domain.',
+        'resource': body
+    });
+    request.execute(function(resp) {
+        callback(resp);
+    });
+}
+
+
+
+/**
+ * Request google to share file with user, and make necessary crypto stuff for sharing
+ *
+ * @param {String} fileId of file which will be shared
+ * @param {String} email address of user with who it will be shared
+ */
+function shareFileGoogle(fileId, email, role, callback) {
+
+    getFileKey(fileId, function(fileKey) {
+        getPubKey(email, function (pubKey) {
+
+            //ENCRYPT FILEKEY WITH PUB-KEY OF USER I AM SHARING WITH
+            var shareFileKey = sjcl.encrypt(pubKey, fileKey);
+
+            //SAVE NEW ENCRYPTED KEY
+            saveFileKey(email, shareFileKey, fileId, function(saveFileKeyResponse) {
+
+                //SHARE ON GOOGLE DRIVE (ADD PERMISSION FOR USER)
+                insertPermissionGoogle(fileId, email, 'user', role, function(resp) {
+                    callback(resp);
+                });
+            });
+        });
+    });
 }
 
 /**
@@ -76,7 +182,7 @@ function handleAuthClick(event) {
  * @param {Function} callback Function to call when the request is complete.
  *
  */
-function getFolderChildren(folderId, callback) {
+function getFolderChildrenGoogle(folderId, callback) {
     gapi.client.load('drive', 'v2', function() {
         var request = gapi.client.request({
             'path': 'drive/v2/files/'+ folderId + '/children',
@@ -96,7 +202,7 @@ function getFolderChildren(folderId, callback) {
  * @param {String} title Name of inserted file.
  * @param {Function} callback Function to call when the request is complete.
  */
-function insertFile(title, callback) {
+function insertFileGoogle(title, callback) {
     gapi.client.load('drive', 'v2', function() {
         var request = gapi.client.request({
             'path': '/drive/v2/files',
@@ -156,7 +262,7 @@ function getPubKey(userEmail, callback) {
 function getPrivKey(callback) {
     $.get('/getPrivKey', function(res) {
         // DECRYPTS PRIVATE KEY WITH USERS KEY
-        var userKey = prompt('Please enter your password');
+        var userKey = prompt('Please enter your password', 'Enter your password here');
         var privKey = sjcl.decrypt(userKey, res);
 
         // DESERIALIZING PRIVATE KEY
@@ -175,11 +281,31 @@ function getPrivKey(callback) {
  * @param {Function} callback Callback function to call when file key is acquired
  */
 function getFileKey(fileId, callback) {
-    $.post('/getFileKey', {'fileId': fileId}, function(res) {
-        callback(res);
-    });
-}
+    getPrivKey(function (privKey) {
+        $.post('/getFileKey', {'fileId': fileId}, function(encFileKey) {
 
+            // DECRYPTS FILE KEY WITH USERS PRIVATE KEY
+            var fileKey = sjcl.decrypt(privKey, encFileKey);
+
+            callback(fileKey);
+        });
+    })
+}
+/**
+ * Saves file key on server
+ *
+ * @param {String} email of user with whose pass its encrypted
+ * @param {Object} encPass encrypted password for file
+ * @param {String} id of file
+ * @param {Function} callback function to be called after request is done
+ */
+function saveFileKey(email, encPass, id, callback) {
+    $.post('/saveFileKey', {
+        user: email,
+        password: encPass,
+        id: id
+    }, callback);
+}
 
 /**
  * Saves keypair(private key encrypted) in database on server
@@ -198,7 +324,6 @@ function saveKeyPair(keyPair, callback) {
  *
  * @returns {*}
  */
-////TODO This should be done alongside with registration
 function generateKeyPair(callback) {
     var keys = sjcl.ecc.elGamal.generateKeys(256);
 
@@ -220,11 +345,6 @@ function generateKeyPair(callback) {
     saveKeyPair(serializedKeyPair, callback);
 }
 
-// TODO
-function shareFile() {
-
-}
-
 
 /**
  * Update an existing file's metadata and content.
@@ -233,7 +353,7 @@ function shareFile() {
  * @param {File} fileData File object to read data from.
  * @param {Function} callback Callback function to call when the request is complete.
  */
-function updateFileResumable(metadata, fileData, callback) {
+function updateFileResumableGoogle(metadata, fileData, callback) {
     var accessToken = gapi.auth.getToken().access_token;
     var email = $.cookie('email');
 
@@ -257,19 +377,21 @@ function updateFileResumable(metadata, fileData, callback) {
                     metadata: metadata,
                     file: blob,
                     token: accessToken,
-                    onComplete: callback,
+                    onComplete: function(gResp) {
+
+                        //FILE PASSWORD ENCRYPTION
+                        var encPass = sjcl.encrypt(pubKey, passString);
+                        gResp = JSON.parse(gResp);
+
+                        //SENDING ENCRYPTED FILE PASSWORD TO SERVER
+                        saveFileKey(email, encPass, gResp.id, callback);
+                    },
                     onError: function(err) {
                         log(err);
                     }
                 });
                 uploader.upload();
             };
-
-            //FILE PASSWORD ENCRYPTION
-            var encPass = sjcl.encrypt(pubKey, passString);
-
-            //SENDING ENCRYPTED FILE PASSWORD TO SERVER
-            $.post('/saveFileKey', encPass, undefined);
         });
     });
 
@@ -282,7 +404,7 @@ function updateFileResumable(metadata, fileData, callback) {
  * @param {File} file Drive File instance.
  * @param {Function} callback Function to call when the request is complete.
  */
-function downloadFileFromDrive(file, callback) {
+function downloadFileGoogle(file, callback) {
     if (file.downloadUrl) {
         var accessToken = gapi.auth.getToken().access_token;
         var xhr = new XMLHttpRequest();
@@ -291,24 +413,23 @@ function downloadFileFromDrive(file, callback) {
         // ITS ENCRYPTED FILE
         if(file.title.indexOf('.sc') > -1) {
             xhr.onload = function() {
-                getPrivKey(function(privKey) {
-                    getFileKey(file.id, function(fileKey) {
-                        // DECRYPTS FILE KEY WITH USERS PRIVATE KEY
-                        var key = sjcl.decrypt(privKey, fileKey);
-                        // DECRYPT FILE
-                        var base64decrypt = sjcl.decrypt(key, xhr.response, {'raw': 1});
-                        var byteArray = new Uint8Array(sjcl.codec.bytes.fromBits(base64decrypt));
+                getFileKey(file.id, function(fileKey) {
 
-                        // ASSIGN TITLE WITHOUT .SC TO FILE
-                        var title = '';
-                        var titleArray = file.title.split('.');
-                        for(i=0; i<titleArray.length - 1; i++){
-                            title = title + "." + titleArray[i];
-                        }
-                        callback({
-                            'title': title,
-                            'data': byteArray
-                        });
+                    // DECRYPT FILE
+                    var base64decrypt = sjcl.decrypt(fileKey, xhr.response, {'raw': 1});
+                    var byteArray = new Uint8Array(sjcl.codec.bytes.fromBits(base64decrypt));
+
+                    // ASSIGN TITLE WITHOUT .SC TO FILE
+                    var title = '';
+                    var titleArray = file.title.split('.');
+                    for(i=0; i<titleArray.length - 1; i++){
+                        title = title + "." + titleArray[i];
+                    }
+
+                    // PASS DOWNLOADED FILE TO CALLBACK
+                    callback({
+                        'title': title,
+                        'data': byteArray
                     });
                 });
             };
@@ -332,6 +453,7 @@ function downloadFileFromDrive(file, callback) {
         xhr.send();
     } else {
         console.log("ERROR MISSING DOWNLOAD URL");
+        console.log(file);
         callback(null);
     }
 }
@@ -341,7 +463,7 @@ function downloadFileFromDrive(file, callback) {
  *
  * @param {String} fileId ID of the file to insert.
  */
-function printParents(fileId) {
+function printParentsGoogle(fileId) {
     var request = gapi.client.drive.parents.list({
         'fileId': fileId
     });

@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var fileSchema = mongoose.Schema({
 
     google           : {
+        user         : String,
         id           : String,
         password     : String
     }

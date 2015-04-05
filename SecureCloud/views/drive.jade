@@ -5,38 +5,56 @@ block content
     .row.row-offcanvas
       .col-xs-12
         #myGoogleDrive
+          #files
           form(method='post', enctype='multipart/form-data')
             #drop
               input#uplFile(type='file', name='upl')
-          #files
-          #driveButtons
-            a#showMyDrive.btn.btn-md.btn-primary(role='button')
-              span.glyphicon.glyphicon-cloud
-              |  Show
-            a#uploadFile.btn.btn-md.btn-primary(role='button')
+          .btn-group#driveButtons(role='group')
+            .btn-group
+              button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
+                span.glyphicon.glyphicon-cloud
+                |  Show
+                span.caret
+              ul.dropdown-menu(role='menu')
+                li
+                  a#showMyFiles(href='#') My files
+                li
+                  a#showSharedWithMe(href='#') Shared with me
+            a#uploadFile.btn.btn-md.btn-default(role='button')
               span.glyphicon.glyphicon-cloud-upload
               |  Upload
-            a#downloadFile.btn.btn-md.btn-primary(role='button')
+            a#downloadFile.btn.btn-md.btn-default(role='button')
               span.glyphicon.glyphicon-cloud-download
               |  Download
+            .input-group
+              input#shareWithEmail.form-control(type='text', placeholder="Recipient's username", aria-describedby='basic-addon2')
+              span.input-group-addon @gmail.com
+              span.input-group-addon.a#shareFile.btn.btn-md.btn-default(role='button')
+                span.glyphicon.glyphicon-share-alt
+                |  Share with friend
     script(type='text/javascript').
       var file;
       $('#downloadFile').attr('disabled', true);
-      $('#showMyDrive').click(function() {
-        showMyDrive('files', 'root');
+      $('#showMyFiles').click(function() {
+        showMyFiles('files', 'root');
+      });
+      $('#showSharedWithMe').click(function() {
+        showSharedWithMe('files');
       });
       $('#downloadFile').click(function() {
-        downloadFile()
+        downloadFile();
       });
       $('#uploadFile').click(function() {
-        uploadFile()
+        uploadFile();
+      });
+      $('#shareFile').click(function() {
+        shareFile();
       });
        // TODO: upload file disabled until form filled
       $.get('isRegistered', function(res) {
         console.log('checking if registerd');
         console.log(res);
         if (res == 'false') {
-          console.log('generating');
           generateKeyPair(function () {});
         }
       });
