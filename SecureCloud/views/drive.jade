@@ -27,11 +27,14 @@ block content
               span.glyphicon.glyphicon-cloud-download
               |  Download
             .input-group
-              input#shareWithEmail.form-control(type='text', placeholder="Recipient's username", aria-describedby='basic-addon2')
+              input#shareWithEmail.form-control(type='text', placeholder="Share with", aria-describedby='basic-addon2')
               span.input-group-addon @gmail.com
               span.input-group-addon.a#shareFile.btn.btn-md.btn-default(role='button')
                 span.glyphicon.glyphicon-share-alt
                 |  Share with friend
+              span.input-group-addon.a#stopShareFile.btn.btn-md.btn-default(role='button')
+                span.glyphicon.glyphicon-lock
+                |  Stop sharing
     script(type='text/javascript').
       var file;
       $('#downloadFile').attr('disabled', true);
@@ -49,6 +52,9 @@ block content
       });
       $('#shareFile').click(function() {
         shareFile();
+      });
+      $('#stopShareFile').click(function() {
+        stopShareFile();
       });
        // TODO: upload file disabled until form filled
       $.get('isRegistered', function(res) {

@@ -147,7 +147,56 @@ function insertPermissionGoogle(fileId, email, type, role, callback) {
     });
 }
 
+/**
+ * Retrieve a list of permissions.
+ *
+ * @param {String} fileId ID of the file to retrieve permissions for.
+ * @param {Function} callback Function to call when the request is complete.
+ */
+function retrievePermissions(fileId, callback) {
+    var request = gapi.client.drive.permissions.list({
+        'fileId': fileId
+    });
+    request.execute(function(resp) {
+        callback(resp.items);
+    });
+}
 
+/**
+ * Remove a permission.
+ *
+ * @param {String} fileId ID of the file to remove the permission for.
+ * @param {String} permissionId ID of the permission to remove.
+ */
+function removePermissionGoogle(fileId, permissionId, callback) {
+    var request = gapi.client.drive.permissions.delete({
+        'fileId': fileId,
+        'permissionId': permissionId
+    });
+    request.execute(function(resp) {
+        callback(resp);
+    });
+}
+
+/**
+ * Stops sharing file with user
+ *
+ * @param {String} fileId id of file on which sharing will be removed
+ * @param {String} email of user
+ * @param {Function} callback Function to call when the request is complete.
+ */
+function stopShareingFileGoogle(fileId, email, callback) {
+    retrievePermissions(fileId, function(permissions) {
+        for(var permission in permissions) {
+            if (permissions[permission].emailAddress == email) {
+                var permId = permissions[permission].id;
+                removePermissionGoogle(fileId, permId, function(resp) {
+                    callback(resp);
+                });
+            }
+        }
+    });
+}
 
 /**
  * Request google to share file with user, and make necessary crypto stuff for sharing

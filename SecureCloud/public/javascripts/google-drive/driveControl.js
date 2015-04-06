@@ -130,6 +130,9 @@ function downloadFile() {
     });
 }
 
+/**
+ * Share file with user specified in #shareWithEmail filed
+ */
 function shareFile() {
     var email = $('#shareWithEmail')[0].value + '@gmail.com';
 
@@ -144,6 +147,20 @@ function shareFile() {
         insertPermissionGoogle(file.id, email, 'user', 'writer', function () {
         });
     }
-
 }
 
+/**
+ * Remove sharing file with user specified in #shareWithEmail field
+ */
+function stopShareFile() {
+    var email = $('#shareWithEmail')[0].value + '@gmail.com';
+
+    //ITS ENCRYPTED FILE
+    if(file.title.indexOf('.sc') > -1) {
+        stopShareingFileGoogle(file.id, email, function() {});
+    }
+    //ITS REGULAR GOOGLE DRIVE FILE
+    else {
+
+    }
+}
