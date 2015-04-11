@@ -32,10 +32,22 @@ Prvá kapitola slúži ako teoretický úvod do kryptografie. Vymenujeme jej cie
 \section{Asymetrické šifrovanie}
 	Nech $\{E_e : e \in K\}$ je množina šifrovacích funkcií a nech  $\{D_d : d \in K\}$ je množina príslušných dešifrovacích funkcií a $\mathcal K$ je množina všetkých kľúčov. Nech pre každý pár $(E_e,D_d)$ platí, že je výpočtovo "nemožné" získať správu $m \in\mathcal M$ pomocou $c \in\	 C$ a $E_e$, keď platí $E_e(m) = c$. 
 	\\Definícia nám hovorí, že keď máme $e \in\mathcal K$ tak je nemožné získat príslušný kľúč $d$ taký aby platilo $D_d(E_e(m)) = m$. Aby bola táto vlastnosť zabezpečená,  kryptografické funkcie sú založené na matematických problémoch ako je faktorizácia alebo výpočet diskrétneho logaritmu. Kľúč $d$ budeme nazývať privátnym a $e$ verejným kľúčom. Pri využití asymetrickej kryptografie nám stačí uchovávať privátny kľúč a taktiež kľúče netreba meniť tak často ako pri symetrických šifrách. Nevýhodou oproti symetrickému šifrovaniu môže byť velkosť kľúčov a rýchlosť šifrovania ktorá býva často nižšia.	
+		
 	
 \section{Hašhovacie funkcie}
-	tu popisem co to je atd..
+	Hašovacou funkciou nazveme funkciu ktorá k vstupu ľubovolnej dĺžky vráti reťazec bitov pevnej dĺžky. Jej výstup budeme nazývať haš. Formálnejšie  $H : I \rightarrow O$  hašovacou funkciou $H$ nazveme funkciu zobrazujúcu z množiny vstupov $I$ na množinu hašov $O$.  Pre rovnaký vstup bude výstup vždy rovnaký.
+	\\
+	Vačšina kryptografických schém využívajúcich hašovacie funkcie využíva takzvané kryptografické hašovacie funkcie. Kryptografická hašovacia funkcia obvykle spĺňa nasledujúce vlastnosti:
+	\begin{enumerate}
+		\item Jednosmernosť: k danému hašu $o \in O$ je výpočtovo "nemožné" získať akýkoľvek vstup $i \in I$ spĺňajúci $H(i) = o$.
+		\item Odolnosť voči kolíziam: je výpočtovo "nemožné" nájsť dva rôzne vstupy s rovnakým hašom $i_1 \ne i_2,$ kde $i_1,i_2 \in I$ pre ktoré platí, že $H(i_1) = H(i_2)$.
+	\end{enumerate}
+	Kryptografické využitie je napríklad v digitálnych podpisoch, konštrukciách authentizačných kódov, pri ukladaní hesiel alebo taktiež môžu slúžiť na kontrolu integrity údajov.
+
 
 \section{Použité šifry}
-	Tu by sa hodilo popisat nejake šifrovacie veci ktoré budem pouzívať. Napríklad AES, ECC, hash-funkcie etc..
+	\subsubsection{AES}
+		Ako moc to mam popisovat??
+	\subsubsection{ECC}
+		Co popisat k tomuto?? 
 		
