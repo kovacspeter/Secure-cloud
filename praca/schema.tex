@@ -1,37 +1,38 @@
 \chapter{Návrh funkcionality}
-	Ďalej opíšeme ako sme navrhli naše riešenie. TODO
+	Ďalej opíšeme ako sme navrhli naše riešenie. Popíšeme ako budeme postupovať v prípade nahrávania, sťahovania, zdieľania a čo spravíme keď už nechceme zdieľať dáta. A taktiež si popíšeme čo treba spraviť predtým ako budeme môcť tieto akcie vykonať.
 	
 	\section{Prerekvizity}
 	
-		Aby naše riešenie fungovalo, budeme potrebovať server, ktorý bude slúžiť na hostovanie našej služby, databázu, ktorá bude ukladať užívateľove dáta a cloudové úložisko, ktoré bude zabezpečovať prácu so súbormi. Cloud musí poskytovať rozhranie pomocou ktorého vieme nahrávať a sťahovať dáta a taktiež musí byť schopné autorizovať rôznych užívateľov pre prístup k dátam iných užívateľov, aby sme boli schopný zdieľať súbory s inými používateľmi. 
+		Aby naše riešenie fungovalo, budeme potrebovať server, ktorý bude poskytovať API na komunikáciu s databázou a bude hostovať naše webové rozhranie, databázu, ktorá bude ukladať užívateľove dáta a cloudové úložisko, ktoré bude zabezpečovať prácu so súbormi. Cloud musí poskytovať rozhranie pomocou ktorého vieme nahrávať a sťahovať dáta a taktiež musí byť schopné autorizovať rôznych užívateľov pre prístup k dátam iných užívateľov, aby sme boli schopný zdieľať súbory s inými používateľmi. 
 		
-	\section{Predpríprava}
+	\section{Registrácia}
 		
 		Keď sa používateľ rozhodne pužívať našu službu musí sa nejakým spôsobom identifikovať a autentifikovať. K tomuto poslúži nejaká forma registrácie pri ktorej si užívateľ zvolí svoje univerzálne heslo pomocou ktorého bude autorizovať akcie ako nahrávanie, sťahovanie, zdieľanie a zrušenie zdieľania dát. Následne v užívateľovom prehliadači vygenerujeme verejný a privátny kľúč, ktorý symetricky zašifrujeme pomocou už zvoleného univerzálneho hesla. Verejný aj zašifrovaný privátny kľúč uložíme na servri kde prístup k verejným kľúčom budú mať všetci používatelia no k privátnym len jeho vlastníci. Tým že privátny kľúč je zašifrovaný server nemá žiadnu informáciu o privátnom kľúči a teda schéma ostane bezpečná.
 	
 	\section{Nahrávanie dát}
 	
-		Užívateľ si v prehliadači vygeneruje, pomocou dostatočne náhodného generátoru, náhodné heslo ktorým zašifruje súbor a vypýta si od servru svoj verejný kľúč ktorým heslo zašifruje. V taktomto tvare ho môže poslať na server spolu s identifikátorom súboru. Keďže heslo je zašifrované a server nemá informáciu o privátnom kľúči užívateľove dáta by mali byť stále v bezpečí. Následne už len stačí zašifrovaný súbor nahrať na cloudové úložisko.
+		Užívateľ si v prehliadači vygeneruje, pomocou dostatočne náhodného generátoru, náhodné heslo ktorým zašifruje súbor a vypýta si od servru svoj verejný kľúč, ktorým heslo zašifruje. V taktomto tvare ho už môže poslať na server. Keďže heslo je zašifrované a server nemá informáciu o privátnom kľúči užívateľove dáta by mali byť stále v bezpečí. Následne už len stačí zašifrovaný súbor nahrať na cloudové úložisko.
 		
 	\section{Sťahovanie dát}
 	
-		
+		Úplne na začiatku si vypýtame od servru privátny kľúč užívateľa a zároveň si od užívateľa vypýtame univerzálne heslo aby sme mohli privátny kľúč dešifrovať. S privátnym kľúčom môžme následne dešifrovať heslo k súboru, ktoré si opäť vypýtame od servru. V tejto chvíli máme k dispozícii kľúč k súboru a teda nám stačí stiahnuť súbor z cloudu a rozšifrovať ho pomocou zmieneného kľúču. 
 	
 	\section{Zdieľanie}
 	
+		Chceme zdieľať súbor ktorý je uložený v zašifrovanej forme na cloude. Keď chceme zdieľať náš súbor je podmienkou aby bol ten s kým chceme zdieľať zaregistrovaný na našom servri a mal vygenerovaný privátny a verejný kľúč. Zdieľanie bude prebiehať tak, že používateľ si od servru vypýta privátny kľúč, ktorý dešifruje pomocou svojho univerzálneho kľúču. Následne požiada server o zašifrovaný kľúč k súboru ktorý dešifruje pomocou privátneho kľúču. Dešifrovaný kľúč k súboru následne zašifruje verejným kľúčom používateľa s ktorým chce zdieľať a takýto kľúč k súboru uloží na servri. Potom pošle požiadavku na cloud aby povolil prístup k súboru používateľovi s ktorým zdieľame. Príjemnca nášho zdieľaného súboru má teraz prístup ku kľúču na dešifrovanie súborou a taktiež si môže stiahnuť zašifrovaný súbor z cloudu.
 		
 	\section{Zrušenie zdieľania}
 	
+		V prípade, že sa rozhodneme zrušiť zdieľanie súboru stačí aby sme požiadali cloudové úložisko o revokovanie prístupu k súborom. Keby sa človek s ktorým ten súbor zdieľame rozhodol ho zverejniť šifrovanie nám nepomôže, pretože už si mohol spraviť kópiu nešifrovanej verzie. Preto stačí revokovať prístup na cloude a nemusíme prešifrovať súbor.
 	
-	
-		\begin{tikzpicture}
+%		\begin{tikzpicture}
 			
-			\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
-			\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
-			\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
-			\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
-			\tikzstyle{arrow} = [thick,->,>=stealth]
+%			\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+%			\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+%			\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+%			\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+%			\tikzstyle{arrow} = [thick,->,>=stealth]
 			
-			\node (start) [startstop] {Start};
+%			\node (start) [startstop] {Start};
 			
-		\end{tikzpicture}
+%		\end{tikzpicture}

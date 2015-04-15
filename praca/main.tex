@@ -7,9 +7,50 @@
 \usepackage{url}            % lepsie zobrazovanie URL
 \usepackage{bibentry}       % zobrazovanie celych odkazov v texte
 \usepackage{tikz}
+\usepackage{hyperref}
 \usetikzlibrary{shapes.geometric, arrows}
 \nobibliography*            % odkazy sa maju dat aj do zoznamu literatury
 \linespread{1.2}
+
+% JAVASCRIPT DEFINITION FOR LISTING
+\usepackage{listings}
+\usepackage{color}
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstset{
+   language=JavaScript,
+   backgroundcolor=\color{lightgray},
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numberstyle=\footnotesize,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+% END OF JAVASCRIPT DEFINITION FOR LISTING
+
 
 % -------------------
 % --- Definicia zakladnych pommov
@@ -237,18 +278,23 @@ English abstract
 
 \bibitem{HOAC} Alfred J. Menezes - Paul C. van Oorschot - Scott A. Vanstone, 1996, Handbook of Applied Cryptography, CRC Press
 
-\bibitem{mega} Mega, Februar 2015,  [online] Dostupné na internete: <https://mega.co.nz/\#doc>
+\bibitem{mega} Mega, Februar 2015,  [online] Dostupné na internete: https://mega.co.nz/\#doc
 
-\bibitem{viivo} Viivo, Februar 2015,  [online] Dostupné na internete: <https://viivo.com/>
+\bibitem{viivo} Viivo, Februar 2015,  [online] Dostupné na internete: https://viivo.com/
 
-\bibitem{boxcryptor} BoxCryptor, Februar 2015,  [online] Dostupné na internete: <https://www.boxcryptor.com/en>
+\bibitem{boxcryptor} BoxCryptor, Februar 2015,  [online] Dostupné na internete: https://www.boxcryptor.com/en
 
-\bibitem{wuala} Wuala, Februar 2015,  [online] Dostupné na internete: <https://www.wuala.com/en/learn/technology>
+\bibitem{wuala} Wuala, Februar 2015,  [online] Dostupné na internete: https://www.wuala.com/en/learn/technology
 
-\bibitem{spideroak} SpiderOak, Februar 2015,  [online] Dostupné na internete: <https://spideroak.com/>
+\bibitem{spideroak} SpiderOak, Februar 2015,  [online] Dostupné na internete: https://spideroak.com/
 
-\bibitem{cryptree} Grolimund D. - Meisser L. - Schmid S. - Wattenhofer R., Cryptree: A Folder Tree Structure for Cryptographic File Systems, [online] Dostupné na internete: <http://dcg.ethz.ch/publications/srds06.pdf>
+\bibitem{cryptree} Grolimund D. - Meisser L. - Schmid S. - Wattenhofer R., Cryptree: A Folder Tree Structure for Cryptographic File Systems, [online] Dostupné na internete: http://dcg.ethz.ch/publications/srds06.pdf
  
+\bibitem{SJCLtext} Stark E. - Hamburg M. - Boneh D., Symetric Cryptography in Javascript, 2009, Annual Computer Security Applications Conference,  [online]  Dostupné na internete: https://bitwiseshiftleft.github.io/sjcl/acsac.pdf
+
+\bibitem{SJCLgit} SJCL, Stanford Javascript Crypto Library, April 2015,  [online]  Dostupné na internete: https://github.com/bitwiseshiftleft/sjcl/
+
+\bibitem{SJCLwiki} SJCL, Stanford Javascript Crypto Library, April 2015,  [online]  Dostupné na internete: https://github.com/bitwiseshiftleft/sjcl/wiki
 %\bibitem{br1} MOLINA H. G. - ULLMAN J. D. - WIDOM J., 2002, Database Systems, Upper Saddle River : Prentice-Hall, 2002, 1119 s., Pearson International edition, 0-13-098043-9
 
 %\bibitem{br2} MOLINA H. G. - ULLMAN J. D. - WIDOM J., 2000 , Databasse System implementation, New Jersey : Prentice-Hall, 2000, 653s., ???

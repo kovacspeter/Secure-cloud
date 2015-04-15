@@ -1,14 +1,134 @@
 \chapter{Implementacia}
 	V tejto kapitole budem popisovat hlavne implementacne detaily
-
+	TODO 
+	
 \section{Použité technologie}
-	Tu spravim prehlad technologii ktore som pouzil preco som sa rozhodol pouzit toto a nie nieco ine a tak podobne.
-	\subsection{Tech1}
+	Pozrieme sa aké technológie naša implementácia využíva na strane klienta a aké na strane servru a v jednoduchosti popíšeme prečo sme ich vybrali.
 	
-	\subsection{tech 2}
+	\subsubsection{Back-end}
 	
-\section{Popis riesenia}
-	Tu popisem ako funguje moje riesenie. 
-	\subsection{Nejaké veci}
+		Pod pojmom back-end máme na mysli implementáciu riešenia mimo užívateľovho počítaču. Na implementáciu serverovej časti sme sa rozhodli použiť Node.js s frameworkom Express, databázový systém MongoDB s pomocou mongoose a ako cloudové riešenie využívame služby Google-Drive. 
+		\\
+		Písať v jednom jazyku front-end aj back-end už dnes vďaka node.js nie je problém. S pomocou webového frameworku Express vieme veľmi ľahko vytvoriť REST API a pridávanie middleware-u taktiež nie je žiadny problém. MongoDB sme sa rozhodli použiť koli dynamickej schéme, škálovateľnosti ale taktiež aj kôli možnosti pracovať s moongose, ktorý nám dáva možnosť pracovať s databázou ako s obyčajnými objektami čo výrazne uľahčuje vývoj. Google-Drive sme sa rozhodli využiť z dôvodu ktívneho využívania a taktiež kôli dobrej dokumentácii API.
+		
+	\subsubsection{Front-end}
+	
+		Za front-end budeme považovať všetky veci ktoré sa dostanú k užívateľovi a budú zobrazované alebo vykonávane v jeho prehliadači. Pre vykreslenie HTML stránky vačšina moderných prehliadačov vnútorne používa nejakú reprezentáciu ktorú budeme nazývať objektový model dokumentu, tzv. DOM - z anglického Document Object Model. Pre prácu s DOM, napríklad na prekreslenie bez toho aby sme museli kontaktovať server a žiadať od neho novú verziu HTML , používame knižnicu jQuery ktorá ja jedna z najznámejších. Jej dokumentácia a developerská podpora je velmi rozsiahla. Knižnicu jQuery budeme taktiež využívať na AJAX volania pre ktoré nám poskytuje jednoduché API. 
+		\\
+		Kryptografiu nám bude zaobstarávať knižnica Stanford Javascript Crypto Library ktorej zdrojový kód a dokumentácia je online \cite{SJCLgit}. Táto open-source knižnica ponúka jednoduché rozhranie pomocou ktorého vieme šifrovať a dešifrovať dáta. Podporuje ako aj symetrickú tak aj asymetrickú kryptografiu a taktiež rôzne hašovacie funkcie.
+
+\section{Stanford Javascript Crypto Library}
+	
+	Opíšeme si bližšie aké šifry knižnica ponúka a predvedieme jednoduché ukážky funkčného kódu využívajúc SJCL.
+	
+	\subsubsection{Prečo SJCL?}
+	
+		Okrem toho, že nám poskytuje všetky kryptografické primitívy ktoré naše riešenie vyžaduje jej hlavnou výhodou je efektívna implementácia ktorá bola jej primárnym cieľom. V rýchlosti šifrovania je v priemere 4x rýchlejšia ako existujúce riešenia \cite{SJCLtext}. Kompatibilita medzi všetkýmy modernými prehliadačmi ako Chrom, Firefox, Safari a Internet Explorer v kombinácii s rýchlostou a jednoduchým používatelským rozhraním boli kritickými prvkami pri výbere. 
+		
+	\subsection{Ukážky}
+	
+		V tejto časti si spravíme krátke ukážky symetrického šifrovania a asymetrického šifrovania. Neskôr sa pozrieme ako sa dá pomocou SJCL hašovať alebo podpisovať. Ukážky sú dostupné aj vo wiki knižnice SJCL \cite{SJCLwiki}.
+		
+		\subsection{Symetrické šifrovanie}
+			
+			Symetrické šifrovanie je velmi jednoduché vďaka tomu ako je zaobalené. V štandardnom nastavení sa použije AES-128 v CCM móde. Pokiaľ je ako prvý parameter vložené heslo typu reťazec, knižnica predpokladá, že heslo nie je dostatočne dobré a použije naňho PBKDF2 s náhodnou soľou.
+			
+			\medskip
+			\begin{lstlisting}[caption=Symetrické šifrovanie]
+				// sifrujeme retazec "text" 
+				var sifrovany_text = sjcl.encrypt("heslo", "text"); 
+				
+				// desifrujeme
+				var desifrovany_text = sjcl.decrypt("heslo", sifrovany_text);  
+				
+				console.log(sifrovany_text);    
+				// ---> {"iv":"A0DOQPxWAlJ5LHjoyhGWcw==","v":1,"iter":1000,"ks":128,"ts":64,"mode":"ccm","adata":"","cipher":"aes","salt":"Kk+ws1Xj0Xo=","ct":"text_v_zasifrovanom_tvate_bude_tu"}
+				console.log(desifrovany_text);   
+				 // ---> text
+				
+							
+			\end{lstlisting}
+			
+			Je možnosť použiť rôznu dĺžku kľúčov, napríklad 128, 192 alebo 256 bitov. Mód šifrovania je tiež parametrizovaný a môžme sa rozhodnúť medzi štandardným CCM alebo volitelnými OCB2 a GCM.
+	
+		
+		\subsection{Asymetrické šifrovanie}
+	
+			Asymetrická kryptografia je implementovaná pomocou eliptických kriviek a je nutné knižnicu skompilovať s parametrom $--with-ecc$ aby sme ju mohli využívať.
+			\medskip
+			\begin{lstlisting}[caption=Asymetrické šifrovanie]
+				// vygenerujeme kluce
+				var kluce = sjcl.ecc.elGamal.generateKeys(256);
+				//popripade sjcl.ecc.elGamal.generateKeys(sjcl.ecc.curves.krivka) kde krivka je jedna z dostupnych kriviek
+				
+				// sifrujeme retazec "text" pomocou verejneho kluca
+				var sifrovany_text = sjcl.encrypt(kluce.pub, "text"); 
+				
+				// desifrujeme pomocou privatneho kluca
+				var desifrovany_text = sjcl.decrypt(kluce.sec, sifrovany_text);  
+				
+				console.log(desifrovany_text);   
+				 // ---> text
+				
+			\end{lstlisting}		
+			
+			Ak kľúče potrebujeme niekam posielať alebo ukladať tak občas sa stane, že ich treba serializovať. Našťastie toto už je implementované v SJCL takže to bez problémov zvládneme na pár riadkov.
+			
+			\medskip
+			\begin{lstlisting}[caption=Serializácia]
+				var kluce = sjcl.ecc.elGamal.generateKeys(256);
+				var verejny = pair.pub.get();
+				var privatny = pair.sec.get();
+
+				// Serializujeme verejny kluc
+				verejny = sjcl.codec.base64.fromBits(verejny.x.concat(verejny.y));
+				console.log(verejny);
+				// ---> uQuXH/yeIpQq8hCWiwCTIMKdsaX...
+
+				// Deserializujeme verejny kluc:
+				verejny = new sjcl.ecc.elGamal.publicKey(
+ 					sjcl.ecc.curves.c256,
+					sjcl.codec.base64.toBits(verejny)
+				);
+
+
+				// Serializujeme privatny kluc
+				privatny = sjcl.codec.base64.fromBits(privatny);
+				console.log(verejny);
+				// ---> IXkJSpYK3RHRaVrd...
+
+				// Deserializujeme privatny kluc:
+				privatny = new sjcl.ecc.elGamal.secretKey(
+    					sjcl.ecc.curves.c256,
+    					sjcl.ecc.curves.c256.field.fromBits(sjcl.codec.base64.toBits(privatny))
+				);
+				
+			\end{lstlisting}	
+	
+		\subsection{Hašovanie}
+		
+			Vytvorenie hašu je otázkou jedného riadku.
+			\medskip
+			\begin{lstlisting}[caption=Hašovanie]
+				//zahashujeme
+				var hash = sjcl.hash.sha256.hash("zahasuj ma");
+		
+			\end{lstlisting}	
+			
+			Okrem SHA-256 je možné použiť aj SHA-1, SHA-512 alebo RIPEMD-160. V balíčku je štandardne iba prvá spomenutá ostatné treba pridať pri kompilácii pomocou parametru $--with-sha512$ respektíve $--with-ripemd160$.
+			 
+		\subsection{Podpisovanie}
+	
+			\medskip
+			\begin{lstlisting}[caption=Podpisovanie]
+				var podpis_kluce = sjcl.ecc.ecdsa.generateKeys(256);
+		
+				var podpis = pair.sec.sign(sjcl.hash.sha256.hash("dolezite data"));
+				console.log(podpis);
+				// [ 799253862, -791427911, -170134622, ...
+
+				var ok = pair.pub.verify(sjcl.hash.sha256.hash("Hello World!"), sig);
+				// vrati true alebo vyhodi error
+			\end{lstlisting}	
 
 
