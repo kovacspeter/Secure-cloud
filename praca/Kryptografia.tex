@@ -1,16 +1,9 @@
-\chapter{Kryptografia}
+\chapter{Základné pojmy a označenia}
 
-Prvá kapitola slúži ako teoretický úvod do kryptografie. Vymenujeme jej ciele, zadefinujeme základné pojmy a vysvetlíme, čo je symetrické a asymetrické šifrovanie a ako fungujú. Budeme vychádzať z knihy Handbook of Applied Cryptography \cite{HOAC}.
+Prvá kapitola slúži ako teoretický úvod do kryptografie. Vymenujeme jej ciele, zadefinujeme základné pojmy, vysvetlíme, čo je symetrické a asymetrické šifrovanie a ako fungujú. Budeme vychádzať z knihy Handbook of Applied Cryptography \cite{HOAC}.
 
 \section{Kryptografia}
 	Kryptografia sa zaoberá metódami ukladania a prenášania dát vo forme, ktorú dokáže spracovať iba taká entita, ktorej sú dáta určené.
-	\subsubsection{Ciele kryptografie}
-	Na úvod popíšeme základné kryptografické ciele ako dôvernosť, integritu a autentickosť. Z cieľov vynecháme dostupnosť, ktorú kryptografia ako taká nedokáže zabezpečiť.
-		\begin{itemize}
-		\item Dôvernosť je vlastnosť, ktorá nám zaručuje, že k dátam sa dostanú len také entity, ktorým bola správa určená a nikto iný. Dôvernosť dát budeme zabezpečovať šifrovaním. 
-		\item Integrita je vlastnosť, ktorá hovorí o modifikácii dát. Aby sme zaručili integritu dát, musí byť zaručená možnosť detegovať manipuláciu s dátami neoprávnenými entitami.
-		\item Autentickosť je vlastnosť, ktorá hovorí o pôvode entity alebo dát. Teda keď Anička pošle správu Bohušovi, Bohuš bude môcť overiť, že správa je skutočne od Aničky. 
-		\end{itemize}
 
 \section{Množiny a operácie}
 	Zadefinujeme si základné množiny a operácie nad nimi, ktoré budeme používať.
@@ -21,33 +14,47 @@ Prvá kapitola slúži ako teoretický úvod do kryptografie. Vymenujeme jej cie
 	\item Množinu $\mathcal K$ nazveme množina kľúčov. Prvok $k \in\mathcal K$ nazveme kľúč.
 	\item Každý prvok $e \in \mathcal K$ jednoznačne určuje bijekciu z $\mathcal M$ do $\mathcal C$. Túto transformáciu budeme značiť $E_e$ a budeme ju nazývať šifrovacou funkciou.
 	\item Nech $D_d$ je bijektívna transformácia z $\mathcal C$ do $\mathcal M$ pomocou prvku  $d \in \mathcal K$, potom  $D_d$ nazveme dešifrovacou funkciou.
-	\item Keď aplikujeme transformáciu $E_e$ na správu $m \in \mathcal M$ budeme hovoriť, že šifrujeme správu $m$. Pokiaľ aplikujeme $D_d$ na $c \in \mathcal C$ budeme hovoriť o dešifrovaní.
+	\item Keď aplikujeme transformáciu $E_e$ na správu $m \in \mathcal M$ budeme hovoriť, že šifrujeme správu $m$. Ak aplikujeme $D_d$ na $c \in \mathcal C$ budeme hovoriť o dešifrovaní.
 	\item Šifra alebo aj šifrovacia schéma sa skladá z množiny $\{E_e : e \in K\}$ a množiny $\{D_d : d \in K\}$, kde platí, že pre kazdé $e \in K$ existuje $d \in K$ také, že $D_d = E_e^{-1}$ a teda platí aj $D_d(E_e(m)) = m$ pre všetky $m \in \mathcal M$.  
 	\end{itemize}
 
 		
 \section{Symetrické šifrovanie}
-	Nech šifrovacia schéma pozostáva z množín $\{E_e : e \in K\}$ a $\{D_d: d \in K\}$ kde $\mathcal K$ je množina všetkých kľúčov. Takúto schému nazveme symetrickou pokiaľ pre každý pár $(e,d)$ platí, že je "ľahké", vypočítať $d$ pomocou $e$, a opačne. Najčastejšie používame $e = d$. Symetrické šifry sú zväčša veľmi rýchle, takže dokážu zašifrovať veľa dát za krátky čas a taktiež kľúče sú relatívne krátke. Symetrické šifry môžu byť zapúzdrené, teda na jednu správu môže byť použitých viac šifier, vďaka čomu môžu dosahovať vačšiu mieru bezpečnosti. Na druhú stranu pri komunikácii dvoch entít býva dobrým zvykom meniť kľúče relatívne často a taktiež kľúč musí ostať v bezpečí počas celej komunikácie.
+	\newtheorem{Symetricke sifrovanie} {Nech šifrovacia schéma pozostáva z množín $\{E_e : e \in K\}$ a $\{D_d: d \in K\}$ kde $\mathcal K$ je množina všetkých kľúčov. Takúto schému nazveme symetrickou ak pre každý pár $(e,d)$ platí, že je "ľahké", vypočítať $d$ pomocou $e$, a opačne.} Najčastejšie používame $e = d$. Symetrické šifry sú zväčša veľmi rýchle, takže dokážu zašifrovať veľa dát za krátky čas a kľúče sú relatívne krátke. Symetrické šifry môžu byť zapúzdrené, teda na jednu správu môže byť použitých viac šifier, vďaka čomu môžu dosahovať vačšiu mieru bezpečnosti. Na druhú stranu pri komunikácii dvoch entít býva dobrým zvykom meniť kľúče relatívne často a zároveň kľúč musí ostať v bezpečí počas celej komunikácie.
 
 \section{Asymetrické šifrovanie}
-	Nech $\{E_e : e \in K\}$ je množina šifrovacích funkcií a nech  $\{D_d : d \in K\}$ je množina príslušných dešifrovacích funkcií a $\mathcal K$ je množina všetkých kľúčov. Nech pre každý pár $(E_e,D_d)$ platí, že je výpočtovo "nemožné" získať správu $m \in\mathcal M$ pomocou $c \in\	 C$ a $E_e$, keď platí $E_e(m) = c$. 
-	\\Definícia nám hovorí, že keď máme $e \in\mathcal K$ tak je nemožné získat príslušný kľúč $d$ taký aby platilo $D_d(E_e(m)) = m$. Aby bola táto vlastnosť zabezpečená,  kryptografické funkcie sú založené na matematických problémoch ako je faktorizácia alebo výpočet diskrétneho logaritmu. Kľúč $d$ budeme nazývať privátnym a $e$ verejným kľúčom. Pri využití asymetrickej kryptografie nám stačí uchovávať privátny kľúč a taktiež kľúče netreba meniť tak často ako pri symetrických šifrách. Nevýhodou oproti symetrickému šifrovaniu môže byť velkosť kľúčov a rýchlosť šifrovania ktorá býva často nižšia.	
+	\newtheorem{Asymetricke sifrovanie} {Nech $\{E_e : e \in K\}$ je množina šifrovacích funkcií a nech  $\{D_d : d \in K\}$ je množina príslušných dešifrovacích funkcií a $\mathcal K$ je množina všetkých kľúčov. Nech pre každý pár $(E_e,D_d)$ platí, že je výpočtovo "nemožné" získať správu $m \in\mathcal M$ pomocou $c \in\	 C$ a $E_e$, keď platí $E_e(m) = c$. }
+	Definícia nám hovorí, že keď máme $e \in\mathcal K$, tak je nemožné získat príslušný kľúč $d$ taký aby platilo $D_d(E_e(m)) = m$. Aby bola táto vlastnosť zabezpečená,  kryptografické funkcie sú založené na matematických problémoch ako je faktorizácia alebo výpočet diskrétneho logaritmu. Kľúč $d$ budeme nazývať privátnym a $e$ verejným kľúčom. Pri využití asymetrickej kryptografie nám stačí uchovávať privátny kľúč a kľúče netreba meniť tak často ako pri symetrických šifrách. Nevýhodou oproti symetrickému šifrovaniu môže byť velkosť kľúčov a nižšia rýchlosť šifrovania	.
 		
 	
-\section{Hašhovacie funkcie}
-	Hašovacou funkciou nazveme funkciu ktorá k vstupu ľubovolnej dĺžky vráti reťazec bitov pevnej dĺžky. Jej výstup budeme nazývať haš. Formálnejšie  $H : I \rightarrow O$  hašovacou funkciou $H$ nazveme funkciu zobrazujúcu z množiny vstupov $I$ na množinu hašov $O$.  Pre rovnaký vstup bude výstup vždy rovnaký.
-	\\
+\section{Hašovacie funkcie}
+	\newtheorem{Hasovanie}{Hašovacou funkciou nazveme funkciu ktorá k vstupu ľubovolnej dĺžky vráti reťazec bitov pevnej dĺžky. Jej výstup budeme nazývať haš. Formálnejšie  $H : I \rightarrow O$  hašovacou funkciou $H$ nazveme funkciu zobrazujúcu z množiny vstupov $I$ na množinu hašov $O$.  Pre rovnaký vstup bude výstup vždy rovnaký.}
 	Vačšina kryptografických schém využívajúcich hašovacie funkcie využíva takzvané kryptografické hašovacie funkcie. Kryptografická hašovacia funkcia obvykle spĺňa nasledujúce vlastnosti:
-	\begin{enumerate}
+	\begin{itemize}
 		\item Jednosmernosť: k danému hašu $o \in O$ je výpočtovo "nemožné" získať akýkoľvek vstup $i \in I$ spĺňajúci $H(i) = o$.
 		\item Odolnosť voči kolíziam: je výpočtovo "nemožné" nájsť dva rôzne vstupy s rovnakým hašom $i_1 \ne i_2,$ kde $i_1,i_2 \in I$ pre ktoré platí, že $H(i_1) = H(i_2)$.
-	\end{enumerate}
-	Kryptografické využitie je napríklad v digitálnych podpisoch, konštrukciách authentizačných kódov, pri ukladaní hesiel alebo taktiež môžu slúžiť na kontrolu integrity údajov.
+	\end{itemize}
+	Kryptografické využitie je napríklad v digitálnych podpisoch, konštrukciách authentizačných kódov, pri ukladaní hesiel alebo môžu slúžiť na kontrolu integrity údajov.
 
 
 \section{Použité šifry}
+
+	TODO => kde ich budem používať
+	
 	\subsubsection{AES}
-		Ako moc to mam popisovat??
+		
+		%Šifra Rijndael navrhnutá Joadom Daemenom a Vincentom Rijmenom bola v roku 2001 štandardizovaná 
+		Veľmi rýchla bloková šifra založená na permutáciach a substitúciach s veľkosťou bloku 128bitov. Dĺžka kľúča sa rôzni od 128 bitov cez 192 bitov až po 256 bitov. Algoritmus šifrovania je nasledovný: 
+		\begin{enumerate}
+			\item Expanzia kľúča - podkľúče sú odvodené z kľúču
+			\item Inicializácia - xorujeme stav s podkľúčom
+			\item Cykly - prebiehajú zámeny bajtov, prehadzovanie riadkov, kombinovanie stĺpcov a xorovanie stavu s podkľúčom 
+			\item Posledný cyklus - zámena bajtov, poprehadzovanie riadkov a xorovanie stavu s podkľúčom 
+		\end{enumerate}
+		Štandardizovaný americkým úradom pre štandardizáciu - NIST v štandarde FIPS - 197 \cite{FIPS197}. Podľa už spomenutej organizácie by AES s dĺžkou kľúča 128 bitov mal byť bezpečný minimálne do roku 2030.
+
 	\subsubsection{ECC}
 		Co popisat k tomuto?? 
 		
+\section{Cloudové úložiská}
+	Cloudové úložisko je služba, ktorá nám umožnuje manipulovať s priestorom prenajatým od poskytovateľa služby. Táto služba by sa mala byť škálovateľná čo znamená, že vieme jednoducho zväčšiť priestor za ktorý platíme. Ďalej by sa mala starať o to aby naše dáta boli stále prístupné, čo zahŕňa ochranu voči strate a poškodeniu dát prípadne výpadkom siete. 

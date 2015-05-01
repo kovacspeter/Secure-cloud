@@ -8,9 +8,23 @@
 \usepackage{bibentry}       % zobrazovanie celych odkazov v texte
 \usepackage{tikz}
 \usepackage{hyperref}
+\usepackage{amsthm}
+\usepackage{float}
 \usetikzlibrary{shapes.geometric, arrows}
 \nobibliography*            % odkazy sa maju dat aj do zoznamu literatury
 \linespread{1.2}
+
+\newtheoremstyle{definition}
+  {\topsep} % Space above
+  {\topsep} % Space below
+  {} % Body font
+  {} % Indent amount
+  {\bfseries} % Theorem head font
+  {:} % Punctuation after theorem head
+  {.5em} % Space after theorem head
+  {} % Theorem head spec (can be left empty, meaning `normal')
+
+\theoremstyle{definition} \newtheorem{defi}{Definícia}
 
 % JAVASCRIPT DEFINITION FOR LISTING
 \usepackage{listings}
@@ -34,6 +48,7 @@
   morestring=[b]"
 }
 
+
 \lstset{
    language=JavaScript,
    backgroundcolor=\color{lightgray},
@@ -49,6 +64,8 @@
    showtabs=false,
    captionpos=b
 }
+
+\renewcommand\lstlistingname{Zdrojový kód}
 % END OF JAVASCRIPT DEFINITION FOR LISTING
 
 
@@ -56,7 +73,7 @@
 % --- Definicia zakladnych pommov
 % -------------------
 \def\*{{\bf FIXME: }}
-\def\serviceName{SecureCloud}
+\def\serviceName{SecureCloud }
 \def\mfyear{2015}
 \def\mftitle{Webovské rozhranie pre bezpečné zdieľanie dokumentov v cloude}
 \def\mfthesistype{bakalárska práca}
@@ -284,7 +301,7 @@ English abstract
 
 \bibitem{boxcryptor} BoxCryptor, Februar 2015,  [online] Dostupné na internete: https://www.boxcryptor.com/en
 
-\bibitem{wuala} Wuala, Februar 2015,  [online] Dostupné na internete: https://www.wuala.com/en/learn/technology
+\bibitem{wuala} Wuala, Februar 2015, [online] Dostupné na internete: https://www.wuala.com/en/learn/technology
 
 \bibitem{spideroak} SpiderOak, Februar 2015,  [online] Dostupné na internete: https://spideroak.com/
 
@@ -295,6 +312,9 @@ English abstract
 \bibitem{SJCLgit} SJCL, Stanford Javascript Crypto Library, April 2015,  [online]  Dostupné na internete: https://github.com/bitwiseshiftleft/sjcl/
 
 \bibitem{SJCLwiki} SJCL, Stanford Javascript Crypto Library, April 2015,  [online]  Dostupné na internete: https://github.com/bitwiseshiftleft/sjcl/wiki
+
+\bibitem{FIPS197} NIST, Processing Standards Publication 197 - AES, April 2015,  [online]  Dostupné na internete: http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf
+
 %\bibitem{br1} MOLINA H. G. - ULLMAN J. D. - WIDOM J., 2002, Database Systems, Upper Saddle River : Prentice-Hall, 2002, 1119 s., Pearson International edition, 0-13-098043-9
 
 %\bibitem{br2} MOLINA H. G. - ULLMAN J. D. - WIDOM J., 2000 , Databasse System implementation, New Jersey : Prentice-Hall, 2000, 653s., ???

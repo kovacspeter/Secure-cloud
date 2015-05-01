@@ -363,6 +363,7 @@ function saveFileKey(email, encPass, id, callback) {
  * @param {Function} callback will be called with respond from server
  */
 function saveKeyPair(keyPair, callback) {
+    // SEND KEYPAIR TO SERVER
     $.post('/saveKeypair', keyPair, function (res2) {
         callback(res2);
     });
@@ -384,13 +385,14 @@ function generateKeyPair(callback) {
         priv: sjcl.codec.base64.fromBits(sec)
     };
 
+    // ASKING USER FOR HIS PASSWORD
+    var passwd = prompt('Enter your new universal password.  ' +
+    'You will need this password to decrypt and share files', 'Password here');
     // ENCRYPTING USERS PRIVATE KEY
-    var passwd = prompt('Enter your password', 'Enter your password here');
     var enc = sjcl.encrypt(passwd, serializedKeyPair.priv);
     serializedKeyPair.priv = enc;
 
     // SENDING KEYPAIR TO SERVER
-    console.log('saving');
     saveKeyPair(serializedKeyPair, callback);
 }
 
@@ -443,8 +445,6 @@ function updateFileResumableGoogle(metadata, fileData, callback) {
             };
         });
     });
-
-
 }
 
 /**
