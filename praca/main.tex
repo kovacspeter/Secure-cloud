@@ -1,5 +1,7 @@
 \documentclass[12pt, oneside]{book}
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage{graphicx}
 \usepackage[slovak]{babel}
 \usepackage{marvosym}
@@ -13,18 +15,6 @@
 \usetikzlibrary{shapes.geometric, arrows}
 \nobibliography*            % odkazy sa maju dat aj do zoznamu literatury
 \linespread{1.2}
-
-\newtheoremstyle{definition}
-  {\topsep} % Space above
-  {\topsep} % Space below
-  {} % Body font
-  {} % Indent amount
-  {\bfseries} % Theorem head font
-  {:} % Punctuation after theorem head
-  {.5em} % Space after theorem head
-  {} % Theorem head spec (can be left empty, meaning `normal')
-
-\theoremstyle{definition} \newtheorem{defi}{Definícia}
 
 % JAVASCRIPT DEFINITION FOR LISTING
 \usepackage{listings}
@@ -186,8 +176,12 @@
 \newpage 
 \thispagestyle{empty}
 
-\vfill
-{\bf Poďakovanie:}
+\par\vspace*{\fill}
+\textit{
+Ďakujem RNDr. Michalovi Rjaškovi, PhD. za cenné
+rady, pripomienky a odborné vedenie pri vypracovávaní
+bakalárskej práce.
+}
 
 % --- Koniec poďakovania
 
@@ -200,9 +194,13 @@
 \huge{Abstrakt}
 \normalsize
 \newline
-Slovenský abstrakt 100-500 slov
-
-{\bf Kľúčové slová:} jedno, druhé, tretie (prípadne štvrté, piate)
+\newline
+Práca sa zaoberá implementáciou webovského rozhrania, ktoré bude slúžiť na bezpečné zdieľanie dokumentov v cloude. 
+Toto rozhranie tvorí vrstvu medzi cloudom a používateľom, ktorá šifruje všetky odchádzajúce dáta a dešifruje prichádzajúce.
+Implementovali sme možnosť zdieľať šifrované súbory a tiež zrušenie zdieľania. Systém sme navrhli tak, aby tretia strana nemohla
+získať informácie o prenášaných dátach v otvorenom tvare.
+\\\\
+{\bf Kľúčové slová:} web aplikácia, cloud, bezpečné zdieľanie dát
 % --- Koniec Abstrakt - Slovensky
 
 
@@ -215,9 +213,10 @@ Slovenský abstrakt 100-500 slov
 \huge{Abstract}
 \normalsize
 \newline
-English abstract
-
-{\bf Keywords:} 
+\newline
+The thesis focuses on an implementation of the web interface for secure file sharing in cloud. The interface is supposed to create a layer between cloud and the user which will encrypt any outgoing data and decrypt all incoming data. We have implemented functionality to share and unshare files in a secure manner. System was designed to prevent the third party from obtaining the unencrypted data.
+\\\\
+{\bf Keywords:} web application, cloud, secure data sharing
 
 % --- Koniec Abstrakt - Anglicky
 

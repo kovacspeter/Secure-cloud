@@ -75,9 +75,10 @@ router.post('/getPubKey', isLoggedIn, function(req,res) {
   User.findOne({ 'google.email' : req.body.email }, function(err, user) {
     // if there is an error, stop everything and return that
     // ie an error connecting to the database
+    console.log(user);
     if (err)
       return done(err);
-    else if(user.google.publicKey != undefined) {
+    else if(user != null && user.google.publicKey != undefined) {
       res.writeHead(200, {'Content-Type': 'text/plain' });
       res.end(user.google.publicKey);
     }

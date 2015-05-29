@@ -1,5 +1,29 @@
 \chapter*{Záver}
+\markboth{Záver}{}
 \addcontentsline{toc}{chapter}{Záver}
 
-V závere je potrebné v stručnosti zhrnúť dosiahnuté výsledky vo vzťahu k stanoveným 
-cieľom. Rozsah záveru je minimálne dve strany. Záver ako kapitola sa nečísluje. 
+%V závere je potrebné v stručnosti zhrnúť dosiahnuté výsledky vo vzťahu k stanoveným 
+%cieľom. Rozsah záveru je minimálne dve strany. Záver ako kapitola sa nečísluje. 
+
+Práca sa zaoberala implementáciou webovského rozhrania, ktoré poskytuje šifrovanie dát v cloude. 
+V úvode sme sa venovali kryptografii, popísali sme jej základné pojmy a typy šifrovania. Ďalej sme predstavili 
+zoznam existujúcich riešení pre bezpečné zdieľanie dát. Prvú skupinu riešení tvoria služby využívajúce vlastné cloudové riešenia, 
+napr. úložisko Mega, do druhej skupiny sme zaradili služby využívajúce už dostupné cloudy (Google Drive, DropBox a iné).
+Nevýhodou prvej skupiny je nutnosť prejsť na neznáme cloudové prostredie a nevýhodou druhej je potreba inštalácie dodatočného softvéra. 
+
+My sme zvolili riešenie, ktoré tieto dva nedostatky eliminuje a kombinuje výhody oboch prístupov. Vytvorili sme službu SecureCloud, 
+ktorá pre použitie vyžaduje iba
+moderný prehliadač, internetové pripojenie a účet populárneho cloudu Google Drive. Pre integráciu s inými cloudovými úložiskami 
+by stačilo implementovať časti, ktoré pracujú s novým cloudom a napojiť ich na naše webové rozhranie. 
+
+V tretej kapitole sme navrhli spôsob fungovania SecureCloudu. Popísali sme jeho funkcionalitu, 
+ktorej prednosťou je, že nevyžaduje zdieľanie informácií v otvorenom tvare so serverom ani cloudom. V službe Mega musí používateľ sprostredkovať 
+svojmu adresátovi heslo na odšifrovanie súborov, kým v našom riešení je potrebné len zadať e-mail adresáta a zvoliť súbor na zdieľanie. To umožňuje
+vyhnúť sa distribúcii hesla po potenciálne nezabezpečených kanáloch.
+
+V poslednej kapitole sme podrobne popísali implementáciu nášho webovského rozhrania, uviedli sme použité technológie, 
+časti zdrojového kódu SecureCloudu a vysvetlili sme ich fungovanie.
+
+Na prácu je možné nadviazať implementáciou ďalších funkcionalít, ako je napríklad šifrovaná kolaborácia v reálnom
+čase alebo podpora pre zdieľané tajomstvo. Ďalším dôležitým aspektom je používateľská prívetivosť, na ktorú sme 
+sa v tejto práci nesústredili. 

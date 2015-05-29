@@ -130,7 +130,6 @@ function updatePermissionGoogle(fileId, permissionId, newRole, callback) {
  * @param {String} role The value "owner", "writer" or "reader".
  */
 function insertPermissionGoogle(fileId, email, type, role, callback) {
-    console.log('inserting permissions');
     var body = {
         'value': email,
         'type': type,
@@ -215,6 +214,7 @@ function shareFileGoogle(fileId, email, role, callback) {
             //SAVE NEW ENCRYPTED KEY
             saveFileKey(email, shareFileKey, fileId, function(saveFileKeyResponse) {
 
+                alert('File shared successfully');
                 //SHARE ON GOOGLE DRIVE (ADD PERMISSION FOR USER)
                 insertPermissionGoogle(fileId, email, 'user', role, function(resp) {
                     callback(resp);
@@ -294,13 +294,17 @@ function createRandomString (callback) {
  */
 function getPubKey(userEmail, callback) {
     $.post('/getPubKey', {'email': userEmail}, function(res) {
+        console.log(res);
         //DESERIALIZING PUBLIC KEY
         var pub = new sjcl.ecc.elGamal.publicKey(
             sjcl.ecc.curves.c256,
             sjcl.codec.base64.toBits(res)
         );
         callback(pub);
-    });
+    })
+        .fail(function() {
+            alert('User ' + userEmail + 'not registered');
+        });
 }
 
 /**
@@ -321,7 +325,10 @@ function getPrivKey(callback) {
         );
 
         callback(sec);
-    });
+    })
+        .fail(function() {
+            alert('Problem retrieving private key from server');
+        });
 }
 
 /**
@@ -330,15 +337,17 @@ function getPrivKey(callback) {
  * @param {Function} callback Callback function to call when file key is acquired
  */
 function getFileKey(fileId, callback) {
-    getPrivKey(function (privKey) {
-        $.post('/getFileKey', {'fileId': fileId}, function(encFileKey) {
 
+    $.post('/getFileKey', {'fileId': fileId}, function(encFileKey) {
+        getPrivKey(function (privKey) {
             // DECRYPTS FILE KEY WITH USERS PRIVATE KEY
             var fileKey = sjcl.decrypt(privKey, encFileKey);
 
             callback(fileKey);
         });
-    })
+    }).fail(function() {
+        alert('Such file key can not be retrieved');
+    });
 }
 /**
  * Saves file key on server
@@ -419,10 +428,12 @@ function updateFileResumableGoogle(metadata, fileData, callback) {
             reader.readAsArrayBuffer(fileData);
             reader.onload = function() {
                 //FILE ENCRYPTION
+                alert('Encrypting');
                 var bits = sjcl.codec.bytes.toBits(new Uint8Array(reader.result));
                 var crypt = sjcl.encrypt(passString, bits);
                 var blob = new Blob([crypt]);
 
+                alert('Uploading');
                 //ACTUAL UPLOADING
                 var uploader = new MediaUploader({
                     metadata: metadata,
@@ -436,6 +447,7 @@ function updateFileResumableGoogle(metadata, fileData, callback) {
 
                         //SENDING ENCRYPTED FILE PASSWORD TO SERVER
                         saveFileKey(email, encPass, gResp.id, callback);
+                        alert('Successfully uploaded');
                     },
                     onError: function(err) {
                         log(err);
@@ -461,9 +473,11 @@ function downloadFileGoogle(file, callback) {
         xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
         // ITS ENCRYPTED FILE
         if(file.title.indexOf('.sc') > -1) {
+            alert('Downloading file');
             xhr.onload = function() {
                 getFileKey(file.id, function(fileKey) {
 
+                    alert('Decrypting');
                     // DECRYPT FILE
                     var base64decrypt = sjcl.decrypt(fileKey, xhr.response, {'raw': 1});
                     var byteArray = new Uint8Array(sjcl.codec.bytes.fromBits(base64decrypt));
@@ -487,6 +501,7 @@ function downloadFileGoogle(file, callback) {
         // ITS NOT ENCRYPTED FILE
         else {
             xhr.responseType = 'arraybuffer';
+            alert('Downloading');
             xhr.onload = function() {
                 var byteArray = new Uint8Array(xhr.response);
                 callback({
@@ -496,13 +511,12 @@ function downloadFileGoogle(file, callback) {
             };
         }
         xhr.onerror = function() {
-            console.log("ERROR! Daco si pokazil :D");
+            alert("ERROR! Daco si pokazil :D");
             callback(null);
         };
         xhr.send();
     } else {
-        console.log("ERROR MISSING DOWNLOAD URL");
-        console.log(file);
+        alert('ERROR! : Google docs not yet supported');
         callback(null);
     }
 }

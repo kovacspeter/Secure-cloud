@@ -96,7 +96,7 @@ function uploadFile() {
             // possible to add callback
         });
     } else {
-        alert('Choose file to upload first');
+        alert('Choose file to upload first by clicking on Choose File button!');
     }
 }
 
@@ -125,7 +125,7 @@ function downloadFile() {
         if (downResp !== null) {
             saveData(downResp.data, downResp.title);
         }else {
-            alert('Please select file by clicking on it');
+            alert('Failed to retrieve file');
         }
     });
 }
@@ -137,15 +137,19 @@ function shareFile() {
     var email = $('#shareWithEmail')[0].value + '@gmail.com';
 
     //ITS ENCRYPTED FILE
-    if(file.title.indexOf('.sc') > -1) {
-        //TODO 3.rd parameter role can be writer/reader let user choose... (chcek permissons in google doc)
-        shareFileGoogle(file.id, email, 'writer', function() {
-        });
-    }
-    //ITS REGULAR GOOGLE DRIVE FILE
-    else {
-        insertPermissionGoogle(file.id, email, 'user', 'writer', function () {
-        });
+    if(file != undefined) {
+        if(file.title.indexOf('.sc') > -1) {
+            //TODO 3.rd parameter role can be writer/reader let user choose... (chcek permissons in google doc)
+            shareFileGoogle(file.id, email, 'writer', function() {
+            });
+        }
+        //ITS REGULAR GOOGLE DRIVE FILE
+        else {
+            insertPermissionGoogle(file.id, email, 'user', 'writer', function () {
+            });
+        }
+    }else {
+        alert('Please select file by clicking on its name');
     }
 }
 
@@ -155,12 +159,12 @@ function shareFile() {
 function stopShareFile() {
     var email = $('#shareWithEmail')[0].value + '@gmail.com';
 
-    //ITS ENCRYPTED FILE
-    if(file.title.indexOf('.sc') > -1) {
-        stopShareingFileGoogle(file.id, email, function() {});
+    if (file != undefined) {
+        //ITS ENCRYPTED FILE
+        stopShareingFileGoogle(file.id, email, function () {});
     }
-    //ITS REGULAR GOOGLE DRIVE FILE
     else {
-
+        alert('Please select file by clicking on its name');
     }
+
 }

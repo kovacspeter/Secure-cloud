@@ -1,9 +1,32 @@
 \chapter*{Úvod}
+\markboth{Úvod}{}
 \addcontentsline{toc}{chapter}{Úvod}
 
-Úvod je prvou komplexnou informáciou o práci, jej cieli, obsahu a štruktúre. Úvod sa 
-vzťahuje na spracovanú tému konkrétne, obsahuje stručný a výstižný opis 
-problematiky, charakterizuje stav poznania alebo praxe v oblasti, ktorá je predmetom 
-školského diela a oboznamuje s významom, cieľmi a zámermi školského diela. Autor 
-v úvode zdôrazňuje, prečo je práca dôležitá a prečo sa rozhodol spracovať danú tému. 
-Úvod ako názov kapitoly sa nečísluje a jeho rozsah je spravidla 1 až 2 strany.
+V práci sa budeme venovať vývoju webového rozhrania pre bezpečné zdieľanie dokumentov  v cloude.
+Ukážeme si, ako je možné využiť existujúce cloudové riešenia a zostrojiť vrstvu medzi nimi a používateľom, ktorá
+bude zabezpečovať kryptografiu a bezpečnosť dát. Systém sa pokúsime navrhnúť tak, aby server a cloud mali čo najmenej 
+ informácií o súboroch alebo o kľúčoch v otvorenom tvare.
+Nakoniec budeme schopní nahrávať, sťahovať a zdieľať šifrované dáta uložené v Google Drive cloude.
+
+Systém s takýmito vlastnosťami môže mať široké uplatnenie. Firemní zamestnanci často používajú cloudové úložiská na zdieľanie dát, ktoré 
+môžu obsahovať obchodné tajomstvá či iné citlivé informácie. V takom prípade je dôležité zabezpečiť dôvernosť informácií, čo je hlavnou úlohou nášho riešenia.
+Téma bezpečného zdieľania dát sa dostala do povedomia aj laickej spoločnosti v roku 2013 po zverejnení dokumentov o sledovacích aktivitách americkej NSA a znova v roku 2014 po úniku intímnych fotografií z iCloudu niektorých hollywoodskych hviezd. 
+Vďaka tomu môže byť naše riešenie zaujímavé nielen v korporátnej sfére ale aj pre bežného používateľa, ktorý chce svoje dáta chrániť.
+
+Prácu rozdelíme do štyroch kapitol. V prvej zadefinujeme základné pojmy, vysvetlíme, čo je šifrovanie
+a aké šifrovanie budeme používať. V ďalšej kapitole
+poskytneme prehľad existujúcich riešení pre bezpečné zdieľanie dát, popíšeme ich funkcionalitu a vymenujeme ich nevýhody.
+Ďalej ukážeme, ako bude vyzerať naše riešenie a v čom sa bude odlišovať od ostatných.
+
+V tretej kapitole navrhneme spôsob jeho fungovania.  V úvode návrhu popíšeme, čo musíme spraviť predtým, ako budeme schopní pracovať s dátami. 
+Ďalej si ukážeme, ako bude fungovať nahrávanie, sťahovanie súborov a práca so zdieľanými dátami.
+
+Posledná kapitola sa bude zaoberať implementáciou návrhu. Uvedieme v nej technológie,
+ktoré sme využili na strane klienta, a ktoré sme použili na strane servera. Zároveň ukážeme najdôležitejšie segmenty zdrojového kódu a vysvetlíme ich fungovanie. 
+
+%Úvod je prvou komplexnou informáciou o práci, jej cieli, obsahu a štruktúre. Úvod sa 
+%vzťahuje na spracovanú tému konkrétne, obsahuje stručný a výstižný opis 
+%problematiky, charakterizuje stav poznania alebo praxe v oblasti, ktorá je predmetom 
+%školského diela a oboznamuje s významom, cieľmi a zámermi školského diela. Autor 
+%v úvode zdôrazňuje, prečo je práca dôležitá a prečo sa rozhodol spracovať danú tému. 
+%Úvod ako názov kapitoly sa nečísluje a jeho rozsah je spravidla 1 až 2 strany.
