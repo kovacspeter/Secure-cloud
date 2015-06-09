@@ -1,0 +1,75 @@
+Celkovo: Kostra aj písaný text v primeranej kvalite a rozsahu, ale viď
+komentáre nižšie.
+
+(1) Hodilo by sa niekde popísať aj celkovo čo sú cloudové úložiská
+(nešifrované), obzvlášť preto, že na nich budete stavať svoje riešenie.
+
+-> DONE
+
+(2) K jednotlivým existujúcim riešeniam by bolo pekné poskytnúť viac
+informácií. Pre každé potrebujete citáciu, ktorá bude mať v zozname
+literatúry webstránku a môžete prípadne citovať aj nejaké recenzie
+porovnávajúce viacero týchto služieb. TIEŽ BY BOLO PEKNÉ K NIM POPÍSAŤ
+ICH HLAVNÉ VLASTNOSTI (ČI SÚ PLATENÉ, ČI JE SOFTVÉR OPENSOURCE, AKÉ
+PLATFORMY PODPORUJE, AKÝ TYP ŠIFROVANIA A POD.)
+
+-> DONE okrem toho ci je to opensource s tym ze su platene mi prislo
+blbe spominat ze to nie je opensource
+
+(3) Časť 1.2 a 1.3 bude musieť byť vo výslednej práci prepísaná do
+prítomného alebo minulého času z budúceho. Časť 1.2. by sa mohla volať
+Cieľ práce
+
+-> DONE
+
+(4) STRANA 4: TVRDÍTE, ŽE MEGA JE NAJLEPŠÍ. V ČOM? TAKÉTO TVRDENIE BY
+SA PATRILO PODPORIŤ KONKRÉTNYMI DÔVODMI ALEBO CITÁCIOU.
+
+-> TO BE DONE toto este premyslim a preformulujem alebo zdovodnim :)
+
+(5) Definícia šifrovacej schémy na strane 6 by mala zrejme obsahovať
+nejaký vzťah medzi kľúčmi e a d, lebo ak pre každé m má platiť
+D_d(E_e(m))=m, tak musíme zvoliť vhodnú dvojicu kľúčov. To isté potom
+aj pri definícii Symetrickej šifry - tam sa vám priam žiada mať nejaké
+označenie pre e zodpovedajúce danému d a naopak.
+
+-> DONE
+
+(6) Používate priveľa odrážkových zoznamov, niektoré by sa dali
+pokojne prerobiť na súvislý text. Obzvlášť by sa to žiadalo na
+stranách 7 a 8 pri výhodách a nevýhodách. Bez akýchkoľvek podnadpisov
+je možn jednotlivé vety pospájať do odstava vhodnými slovnými
+spojeniami, napr. Hlavnou výhodou symetrických šifier je, že
+... Taktiež sú ... A napokon,... Na druhej strane ale ...
+
+-> DONE
+
+(7) Strana 7: Čo znamená, že sú šifry zapúzdrené?
+
+-> DONE
+
+(8) Strana 7: Čo presne znamená, že je výpočtovo nemožné získať
+správu?
+
+-> DONE
+
+(9) KAPITOLA O KRYPTOGRAFII JE POMERNE KRÁTKA A VŠEOBECNÁ. MOŽNO BY
+BOLO DOBRE ASPOŇ STRUČNE POPÍSAŤ ŠIFRU, KTORÚ BUDETE POUŽÍVAŤ VO VAŠOM
+RIEŠENÍ.
+
+-> TO BE DONE este nie je dokoncena pridam tam hasovacie funkcie a pokusim
+sa popisat sifry ktore budem pouzivat
+
+(10) VAŠA OSNOVA SA ZDÁ BYŤ NEVYVÁŽENÁ. MÁTE DVE KRÁTKE KAPITOLY S
+PREHĽADOM A JEDNU DLHÚ O SVOJEJ PRÁCI. TROCHU SA TO NAPRAVÍ, KEĎ DO
+PREHĽADOVÝCH PRIDÁTE METARIÁL, ALE MOŽNO BUDE TREBA NEJAKO ROZDELIŤ
+AJ TÚ KAPITOLU O IMPLEMENTÁCII.
+
+-> DONE 
+
+(11) Preklepy a drobné chyby:
+- strana 4: služnu -> službu
+- strana 5: knižky -> knihy alebo učebnice (knižka je príliš neformálne)
+- strana 6: detekovať -> detegovať (znie to hlúpo, ale je to tak)
+
+-> DONE

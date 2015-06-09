@@ -1,3 +1,5 @@
+//TODO REVRITE TO PROTOTYPE??
+
 /**
  * Retrieve all chidrens of root folder. When finished for appends each children to html of where.
  * @param where element where drive content will be shown
@@ -18,7 +20,7 @@ function showMyFiles(where, folder) {
                     folderList.append(fileInfo);
                     $('#drive-back').click(function () {
                         getFileMetadataGoogle(metadata.parents[0].id, function(r) {
-                            //TODO fix if hack (shared folder root don't have parents)
+                            //TODO fix "if" hack (shared folder root don't have parents)
                             if (r.parents[0] !== undefined) {
                                 showMyFiles('files', r.parents[0].id);
                             } else {
@@ -40,7 +42,14 @@ function showMyFiles(where, folder) {
                     fileInfo.append("<a id=" + metadata.id + "><div class='google-file'><img src='images/file.png'>" + metadata.title + "</div></a>");
                     fileList.append(fileInfo);
                     $('#' + metadata.id).click(function () {
-                        file = metadata;
+                        if(file !== undefined) {
+                            $('#' + file.id).css("color", "#428bca");
+                            file = metadata;
+                            $('#' + file.id).css("color", "green");
+                        }else {
+                            file = metadata;
+                            $('#' + file.id).css("color", "green");
+                        }
                         $('#downloadFile').attr('disabled', false);
                     });
                 }
@@ -120,7 +129,6 @@ function downloadFile() {
         };
     }());
 
-    //TODO if its driveFile (google-doc / google-xml etc..) missing download url (need to download via export url))
     downloadFileGoogle(file, function (downResp) {
         if (downResp !== null) {
             saveData(downResp.data, downResp.title);
@@ -128,6 +136,7 @@ function downloadFile() {
             alert('Failed to retrieve file');
         }
     });
+
 }
 
 /**

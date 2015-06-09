@@ -3,7 +3,7 @@ var router         = express.Router();
 var passport       = require('passport');
 var File           = require('../models/file');
 var User           = require('../models/user');
-var ultraSecretKey = 'n01c4nKnowThis$h1t';
+var ultraSecretKey = 'n01c4nKnowThisL#*g$h1t';
 var sjcl           = require('../node_modules/sjcl/sjcl.js');
 
 
@@ -210,7 +210,7 @@ router.post('/login', passport.authenticate('local-login', {
 // send to google to do the authentication
 // profile gets us their basic information including their name
 // email gets their emails
-router.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+router.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email', 'https://www.googleapis.com/auth/drive'] }));
 
 // the callback after google has authenticated the user
 router.get('/auth/google/callback',

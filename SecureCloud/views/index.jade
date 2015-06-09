@@ -14,7 +14,7 @@ block content
             li(data-target='#myCarousel', data-slide-to='0')
             li.active(data-target='#myCarousel', data-slide-to='1')
           .carousel-inner
-            .item
+            .item.active
               // <img src="../images/blackbg.jpeg" alt="First slide">
               .container
                 .carousel-caption
@@ -22,14 +22,14 @@ block content
                   p We already support Google Drive, Try it today!
                   p
                     a.btn.btn-lg.btn-primary(href='drive#', role='button') Start using today!
-            .item.active
+            .item
               // <img src="../images/blackbg.jpeg" alt="Second slide">
               .container
                 .carousel-caption
-                  h1 DropBox
-                  p Not using Google? Be safe with DropBox and SecureCloud
+                  h1 DropBox (not supported for now)
+                  p Not using Google? Stay tuned, we will support DropBox in no-time :) 
                   p
-                    a.btn.btn-lg.btn-primary(href='dropbox#', role='button') Start using today!
+            //        a.btn.btn-lg.btn-primary(href='dropbox#', role='button') Start using today!
           a.left.carousel-control(href='#myCarousel', role='button', data-slide='prev')
             span.glyphicon.glyphicon-chevron-left
           a.right.carousel-control(href='#myCarousel', role='button', data-slide='next')

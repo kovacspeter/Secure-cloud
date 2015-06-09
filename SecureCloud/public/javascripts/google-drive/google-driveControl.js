@@ -1,3 +1,4 @@
+//TODO REVRITE TO PROTOTYPE??
 
 // Enter a client ID for a web application from the Google Developer Console.
 // In your Developer Console project, add a JavaScript origin that corresponds to the domain
@@ -17,7 +18,7 @@ var scopes = 'https://www.googleapis.com/auth/drive';
 function handleClientLoadGoogle() {
     gapi.client.setApiKey(apiKey);
     window.setTimeout(checkAuthGoogle,1);
-    $('#auth').click(handleAuthClickGoogle);
+    handleAuthClickGoogle;
 }
 
 /**
@@ -34,9 +35,10 @@ function checkAuthGoogle() {
 function handleAuthResultGoogle(authResult) {
     if (authResult && !authResult.error) {
         console.log('auth success');
-
     } else {
         console.log('auth failed');
+        console.log(authResult.error);
+        console.log(authResult);
     }
 }
 
@@ -314,17 +316,21 @@ function getPubKey(userEmail, callback) {
  */
 function getPrivKey(callback) {
     $.get('/getPrivKey', function(res) {
-        // DECRYPTS PRIVATE KEY WITH USERS KEY
-        var userKey = prompt('Please enter your password', 'Enter your password here');
-        var privKey = sjcl.decrypt(userKey, res);
+        try {
+            // DECRYPTS PRIVATE KEY WITH USERS KEY
+            var userKey = prompt('Please enter your password', 'Enter your password here');
+            var privKey = sjcl.decrypt(userKey, res);
 
-        // DESERIALIZING PRIVATE KEY
-        var sec = new sjcl.ecc.elGamal.secretKey(
-            sjcl.ecc.curves.c256,
-            sjcl.ecc.curves.c256.field.fromBits(sjcl.codec.base64.toBits(privKey))
-        );
+            // DESERIALIZING PRIVATE KEY
+            var sec = new sjcl.ecc.elGamal.secretKey(
+                sjcl.ecc.curves.c256,
+                sjcl.ecc.curves.c256.field.fromBits(sjcl.codec.base64.toBits(privKey))
+            );
 
-        callback(sec);
+            callback(sec);
+        } catch (err) {
+            alert('Error getting privateKey \n' + err);
+        }
     })
         .fail(function() {
             alert('Problem retrieving private key from server');
@@ -340,8 +346,13 @@ function getFileKey(fileId, callback) {
 
     $.post('/getFileKey', {'fileId': fileId}, function(encFileKey) {
         getPrivKey(function (privKey) {
-            // DECRYPTS FILE KEY WITH USERS PRIVATE KEY
-            var fileKey = sjcl.decrypt(privKey, encFileKey);
+
+            try {
+                // DECRYPTS FILE KEY WITH USERS PRIVATE KEY
+                var fileKey = sjcl.decrypt(privKey, encFileKey);
+            } catch (err) {
+                alert('Error getting fileKey' + err);
+            }
 
             callback(fileKey);
         });
@@ -428,12 +439,12 @@ function updateFileResumableGoogle(metadata, fileData, callback) {
             reader.readAsArrayBuffer(fileData);
             reader.onload = function() {
                 //FILE ENCRYPTION
-                alert('Encrypting');
+                alert('Encrypting, click ok to continue!');
                 var bits = sjcl.codec.bytes.toBits(new Uint8Array(reader.result));
                 var crypt = sjcl.encrypt(passString, bits);
                 var blob = new Blob([crypt]);
 
-                alert('Uploading');
+                alert('Uploading, click ok to continue!');
                 //ACTUAL UPLOADING
                 var uploader = new MediaUploader({
                     metadata: metadata,
@@ -466,34 +477,57 @@ function updateFileResumableGoogle(metadata, fileData, callback) {
  * @param {Function} callback Function to call when the request is complete.
  */
 function downloadFileGoogle(file, callback) {
-    if (file.downloadUrl) {
-        var accessToken = gapi.auth.getToken().access_token;
-        var xhr = new XMLHttpRequest();
+    var accessToken = gapi.auth.getToken().access_token;
+    var xhr = new XMLHttpRequest();
+    //ITS GOOGLE DRIVE FILE (google-docs)
+    if (file.downloadUrl == undefined) {
+        // TODO UI FOR SELECTING SUPPORTED FORMATS
+        alert('Google Docs support is limited for now(UI needed) -> downloading plaintext form')
+        xhr.open('GET', file.exportLinks['text/plain']);
+        xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+
+        xhr.responseType = 'arraybuffer';
+        alert('Downloading');
+        xhr.onload = function () {
+            var byteArray = new Uint8Array(xhr.response);
+            callback({
+                'title': file.title,
+                'data': byteArray
+            });
+        };
+    //IT IS NORMAL FILE (pdf,txt,...)
+    } else {
         xhr.open('GET', file.downloadUrl);
         xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
         // ITS ENCRYPTED FILE
-        if(file.title.indexOf('.sc') > -1) {
-            alert('Downloading file');
-            xhr.onload = function() {
-                getFileKey(file.id, function(fileKey) {
+        if (file.title.indexOf('.sc') > -1) {
+            alert('Downloading file, click ok to continue!');
+            xhr.onload = function () {
+                getFileKey(file.id, function (fileKey) {
 
-                    alert('Decrypting');
+                    alert('Decrypting, click ok to continue!');
                     // DECRYPT FILE
-                    var base64decrypt = sjcl.decrypt(fileKey, xhr.response, {'raw': 1});
-                    var byteArray = new Uint8Array(sjcl.codec.bytes.fromBits(base64decrypt));
+                    try {
+                        var base64decrypt = sjcl.decrypt(fileKey, xhr.response, {'raw': 1});
+                        var byteArray = new Uint8Array(sjcl.codec.bytes.fromBits(base64decrypt));
 
-                    // ASSIGN TITLE WITHOUT .SC TO FILE
-                    var title = '';
-                    var titleArray = file.title.split('.');
-                    for(i=0; i<titleArray.length - 1; i++){
-                        title = title + "." + titleArray[i];
+                        // ASSIGN TITLE WITHOUT .SC TO FILE
+                        var title = '';
+                        var titleArray = file.title.split('.');
+                        for (i = 0; i < titleArray.length - 1; i++) {
+                            title = title + "." + titleArray[i];
+                        }
+
+                        // PASS DOWNLOADED FILE TO CALLBACK
+                        callback({
+                            'title': title,
+                            'data': byteArray
+                        });
                     }
-
-                    // PASS DOWNLOADED FILE TO CALLBACK
-                    callback({
-                        'title': title,
-                        'data': byteArray
-                    });
+                    catch (err) {
+                        alert("Something went wrong!");
+                        alert(err.message);
+                    }
                 });
             };
 
@@ -502,7 +536,7 @@ function downloadFileGoogle(file, callback) {
         else {
             xhr.responseType = 'arraybuffer';
             alert('Downloading');
-            xhr.onload = function() {
+            xhr.onload = function () {
                 var byteArray = new Uint8Array(xhr.response);
                 callback({
                     'title': file.title,
@@ -510,16 +544,34 @@ function downloadFileGoogle(file, callback) {
                 });
             };
         }
-        xhr.onerror = function() {
-            alert("ERROR! Daco si pokazil :D");
-            callback(null);
-        };
-        xhr.send();
-    } else {
-        alert('ERROR! : Google docs not yet supported');
-        callback(null);
     }
+    xhr.onerror = function () {
+        alert("ERROR! Daco si pokazil :D");
+        callback(null);
+    };
+    //TODO create progressbar on downloading/uploading/sharing...
+    xhr.onprogress = function (event) {
+        console.log(event.loaded / file.fileSize);
+    };
+    xhr.send();
 }
+//TODO UX TODOS:
+//TODO create drag and drop file upload
+//todo ------------------------
+//TODO create progressbar on downloading/uploading/sharing...
+//-----------------PROGRESS BAR------------------------
+// progress on transfers from the server to the client (downloads)
+function updateProgress (oEvent) {
+    if (oEvent.lengthComputable) {
+        var percentComplete = oEvent.loaded / oEvent.total;
+        console.log(percentComplete);
+        // ...
+    } else {
+        console.log(oEvent);
+        console.log('length uncomputable');
+        // Unable to compute progress information since the total size is unknown
+    }
+}//------------------PROGRESS BAR------------------------
 
 /**
  * Returns file's parents.

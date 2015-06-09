@@ -13,6 +13,8 @@ var configAuth = {
         'clientID'      : '1079273904456-fnhtnp9jsenjlanmoo679c09u0edq34r.apps.googleusercontent.com',
         'clientSecret'  : 'euxH2OhSRJlacLtu_oRAbFwZ',
         'callbackURL'   : 'http://localhost:9117/auth/google/callback'
+        //WHEN DEPLOYING CHANGE THIS
+        //'callbackURL'   : 'http://pkovacs.sk:9117/auth/google/callback'
     }
 }
 
